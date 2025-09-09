@@ -16,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Getter@Setter
-@AllArgsConstructor@NoArgsConstructor
+@NoArgsConstructor@AllArgsConstructor
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
