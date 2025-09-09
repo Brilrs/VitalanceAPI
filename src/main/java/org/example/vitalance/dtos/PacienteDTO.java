@@ -46,16 +46,16 @@ private UserDTO user;
     private List<MedicionesDTO> mediciones = new ArrayList<>();
 
 
-    public PacienteDTO(int id, String numeroHistoriaClinica, String tipoDiabetes, Date fechaDiagnostico, double estatura, double peso, double glucosaMinima, double glucosaMaxima, Date fechaCreacion, UserDTO user) {
+    public PacienteDTO(int id, double estatura, Date fechaCreacion, Date fechaDiagnostico, double glucosaMaxima, double glucosaMinima, String numeroHistoriaClinica, double peso, String tipoDiabetes, UserDTO user) {
         this.id = id;
-        this.numeroHistoriaClinica = numeroHistoriaClinica;
-        this.tipoDiabetes = tipoDiabetes;
-        this.fechaDiagnostico = fechaDiagnostico;
         this.estatura = estatura;
-        this.peso = peso;
-        this.glucosaMinima = glucosaMinima;
-        this.glucosaMaxima = glucosaMaxima;
         this.fechaCreacion = fechaCreacion;
+        this.fechaDiagnostico = fechaDiagnostico;
+        this.glucosaMaxima = glucosaMaxima;
+        this.glucosaMinima = glucosaMinima;
+        this.numeroHistoriaClinica = numeroHistoriaClinica;
+        this.peso = peso;
+        this.tipoDiabetes = tipoDiabetes;
         this.user = user;
     }
 }
