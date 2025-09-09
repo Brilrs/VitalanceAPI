@@ -1,11 +1,25 @@
 package org.example.vitalance.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.vitalance.entidades.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Getter@Setter
+@AllArgsConstructor@NoArgsConstructor
 public class UserDTO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUser;
     private String correoUser;
     private String passwordUser;
@@ -17,101 +31,29 @@ public class UserDTO {
     private LocalDate fechaNacimientoUser;
     private LocalDateTime fechaRegistroUser;
     private Boolean activoUser;
-    private Role rol;
 
-    public int getIdUser() {
-        return idUser;
-    }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
 
-    public Role getRol() {
-        return rol;
-    }
 
-    public void setRol(Role rol) {
-        this.rol = rol;
-    }
+    //relacion de uno a uno con paciente
+    @ManyToOne(fetch = FetchType.LAZY) //muchos libros para un autor
+    @JoinColumn(name = "Role_id") // en postgress, un libro tiene un atributo id_autor que tiene el id de un autor
+    @JsonBackReference
+    private RoleDTO rol;
 
-    public Boolean getActivoUser() {
-        return activoUser;
-    }
 
-    public void setActivoUser(Boolean activoUser) {
-        this.activoUser = activoUser;
-    }
 
-    public LocalDateTime getFechaRegistroUser() {
-        return fechaRegistroUser;
-    }
 
-    public void setFechaRegistroUser(LocalDateTime fechaRegistroUser) {
-        this.fechaRegistroUser = fechaRegistroUser;
-    }
+    @OneToOne(mappedBy="user", cascade= CascadeType.ALL)
+    @JsonManagedReference
+    private PacienteDTO paciente;
 
-    public LocalDate getFechaNacimientoUser() {
-        return fechaNacimientoUser;
-    }
 
-    public void setFechaNacimientoUser(LocalDate fechaNacimientoUser) {
-        this.fechaNacimientoUser = fechaNacimientoUser;
-    }
+//relacion uno a muchos con mediciones
+    @OneToMany
+            //un usuario tiene muchas mediciones, mapeado con atributo "usuario" en clase MedicionesDTO
+   (fetch = FetchType.LAZY,mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<MedicionesDTO> mediciones = new ArrayList<>();
 
-    public String getGeneroUser() {
-        return generoUser;
-    }
-
-    public void setGeneroUser(String generoUser) {
-        this.generoUser = generoUser;
-    }
-
-    public String getTelefonoUser() {
-        return telefonoUser;
-    }
-
-    public void setTelefonoUser(String telefonoUser) {
-        this.telefonoUser = telefonoUser;
-    }
-
-    public String getApellidoUser() {
-        return apellidoUser;
-    }
-
-    public void setApellidoUser(String apellidoUser) {
-        this.apellidoUser = apellidoUser;
-    }
-
-    public String getNombreUser() {
-        return nombreUser;
-    }
-
-    public void setNombreUser(String nombreUser) {
-        this.nombreUser = nombreUser;
-    }
-
-    public String getEmailUser() {
-        return emailUser;
-    }
-
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
-    }
-
-    public String getPasswordUser() {
-        return passwordUser;
-    }
-
-    public void setPasswordUser(String passwordUser) {
-        this.passwordUser = passwordUser;
-    }
-
-    public String getCorreoUser() {
-        return correoUser;
-    }
-
-    public void setCorreoUser(String correoUser) {
-        this.correoUser = correoUser;
-    }
 }
