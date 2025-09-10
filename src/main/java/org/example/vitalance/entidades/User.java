@@ -21,7 +21,6 @@ public class User {
     private Long idUser;
 
     private String correoUser;
-    private String passwordUser;
     private String emailUser;
     private String nombreUser;
     private String apellidoUser;
