@@ -1,8 +1,7 @@
-package org.example.vitalance.Controller;
+package org.example.vitalance.controllers;
 
 import org.example.vitalance.Servicios.PacienteService;
 import org.example.vitalance.dtos.PacienteDTO;
-import org.example.vitalance.entidades.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

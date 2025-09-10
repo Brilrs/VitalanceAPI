@@ -1,69 +1,61 @@
 package org.example.vitalance.Servicios;
 
 import org.example.vitalance.Repositorios.PacienteRepository;
-import org.example.vitalance.Repositorios.UsuarioRepository;
+import org.example.vitalance.Repositorios.UserRepository;
 import org.example.vitalance.dtos.PacienteDTO;
+import org.example.vitalance.dtos.RoleDTO;
 import org.example.vitalance.dtos.UserDTO;
+import org.example.vitalance.entidades.Paciente;
+import org.example.vitalance.interfaces.IPacienteService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class PacienteService {
+public class PacienteService implements IPacienteService {
     @Autowired
     private PacienteRepository pacienteRepository;
-@Autowired
-private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
-
-public List<PacienteDTO> ObtenerPacientes(){
-    return pacienteRepository.findAll();
-}
-
-
-
- public PacienteDTO AgregarPaciente(PacienteDTO pacienteDTO){
-    UserDTO userDTO = null;
-for( UserDTO u: usuarioRepository.findAll() ){
-    if(u.getIdUser()==pacienteDTO.getUser().getIdUser()){
-        userDTO = u;
+    @Override
+    public List<PacienteDTO> ObtenerPacientes() {
+        return pacienteRepository.findAll();
     }
-}
-pacienteDTO.setUser(userDTO);
-    return pacienteRepository.save(pacienteDTO);
- }
 
+    @Override
+    public PacienteDTO AgregarPaciente(PacienteDTO paciente) {
 
+        return pacienteRepository.save(paciente);
+    }
 
+    @Override
+    public String EliminarPaciente(int id) {
+        pacienteRepository.deleteById(id);
+        return "Eliminado el paciente con id: "+id;
+    }
 
-
-
-
- public String EliminarPaciente(int id){
-     pacienteRepository.deleteById(id);
-    return "Eliminado el paciente con id: "+id;
- }
-
- public String actualizarPaciente(PacienteDTO pacienteDTO, int id){
-    for(PacienteDTO paciente : pacienteRepository.findAll()){
-        if(paciente.getId()==id){
-            paciente.setId(paciente.getId());
-            paciente.setNumeroHistoriaClinica(pacienteDTO.getNumeroHistoriaClinica());
-            paciente.setTipoDiabetes(pacienteDTO.getTipoDiabetes());
-            paciente.setFechaDiagnostico(pacienteDTO.getFechaDiagnostico());
-            paciente.setEstatura(pacienteDTO.getEstatura());
-            paciente.setPeso(pacienteDTO.getPeso());
-            paciente.setGlucosaMinima(pacienteDTO.getGlucosaMinima());
-            paciente.setGlucosaMaxima(pacienteDTO.getGlucosaMaxima());
-            paciente.setFechaCreacion(paciente.getFechaCreacion());
-            pacienteRepository.save(paciente);
+    @Override
+    public String actualizarPaciente(PacienteDTO pacienteDTO, int id) {
+        for(PacienteDTO paciente : pacienteRepository.findAll()){
+            if(paciente.getId()==id){
+                paciente.setId(paciente.getId());
+                paciente.setNumeroHistoriaClinica(pacienteDTO.getNumeroHistoriaClinica());
+                paciente.setTipoDiabetes(pacienteDTO.getTipoDiabetes());
+                paciente.setFechaDiagnostico(pacienteDTO.getFechaDiagnostico());
+                paciente.setEstatura(pacienteDTO.getEstatura());
+                paciente.setPeso(pacienteDTO.getPeso());
+                paciente.setGlucosaMinima(pacienteDTO.getGlucosaMinima());
+                paciente.setGlucosaMaxima(pacienteDTO.getGlucosaMaxima());
+                paciente.setFechaCreacion(paciente.getFechaCreacion());
+                pacienteRepository.save(paciente);
+            }
         }
+
+        return "El paciente con id: "+id+" fue actualizado";
     }
-
-   return "El paciente con id: "+id+" fue actualizado";
- }
-
 
 }

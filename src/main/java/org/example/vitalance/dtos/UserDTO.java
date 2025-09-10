@@ -16,11 +16,11 @@ import java.util.List;
 
 @Entity
 @Getter@Setter
-@NoArgsConstructor@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idUser;
+    private Long idUser;
     private String correoUser;
     private String passwordUser;
     private String emailUser;
@@ -31,7 +31,6 @@ public class UserDTO {
     private LocalDate fechaNacimientoUser;
     private LocalDateTime fechaRegistroUser;
     private Boolean activoUser;
-
 
 
 
@@ -55,5 +54,21 @@ public class UserDTO {
    (fetch = FetchType.LAZY,mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<MedicionesDTO> mediciones = new ArrayList<>();
+
+    public UserDTO(Long idUser, String correoUser, String passwordUser, String emailUser, String nombreUser, String apellidoUser, String telefonoUser, String generoUser, LocalDate fechaNacimientoUser, LocalDateTime fechaRegistroUser, Boolean activoUser, PacienteDTO paciente, RoleDTO rol) {
+        this.idUser = idUser;
+        this.correoUser = correoUser;
+        this.passwordUser = passwordUser;
+        this.emailUser = emailUser;
+        this.nombreUser = nombreUser;
+        this.apellidoUser = apellidoUser;
+        this.telefonoUser = telefonoUser;
+        this.generoUser = generoUser;
+        this.fechaNacimientoUser = fechaNacimientoUser;
+        this.fechaRegistroUser = fechaRegistroUser;
+        this.activoUser = activoUser;
+        this.paciente = paciente;
+        this.rol = rol;
+    }
 
 }
