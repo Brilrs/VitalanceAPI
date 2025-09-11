@@ -3,6 +3,7 @@ package org.example.vitalance.entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Getter
 @Setter//generar getter y setter
 
-@NoArgsConstructor //generar constructor con y sin argumentos
+@NoArgsConstructor @AllArgsConstructor//generar constructor con y sin argumentos
 @Table(name = "Mediciones")
 public class Mediciones {
     @Id
@@ -29,7 +30,7 @@ public class Mediciones {
     private String notasValidacion;
 
 
-    //relacion muchos a uno con usuarioDTO
+    //relacion muchos a uno con usuario
     @ManyToOne
     @JoinColumn(name = "User_Id")
     @JsonBackReference
@@ -41,15 +42,5 @@ public class Mediciones {
     @JsonBackReference
     private Paciente paciente;
 
-    public Mediciones(int id, Date fechaMedicion, String notasValidacion, String origen, String tipoMedicion, String unidad, double valor, Paciente paciente, User usuario) {
-        this.id = id;
-        this.fechaMedicion = fechaMedicion;
-        this.notasValidacion = notasValidacion;
-        this.origen = origen;
-        this.tipoMedicion = tipoMedicion;
-        this.unidad = unidad;
-        this.valor = valor;
-        this.paciente = paciente;
-        this.usuario = usuario;
-    }
+
 }

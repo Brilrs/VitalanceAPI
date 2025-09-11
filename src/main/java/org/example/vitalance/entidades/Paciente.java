@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter//generar getter y setter
 @NoArgsConstructor //generar constructor con y sin argumentos
-
+@Table(name = "Paciente")
 public class Paciente{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,31 +29,14 @@ public class Paciente{
 
     //relacion de uno a uno con usuario
     @OneToOne
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "User_Id")
     @JsonBackReference
     private User user;
-
-
-
-
-
-
-
-
-
     @OneToMany
             //un paciente tiene muchas mediciones, mapeado con atributo "paciente" en clase MedicionesDTO
             (fetch = FetchType.LAZY,mappedBy = "paciente", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Mediciones> mediciones = new ArrayList<>();
-
-
-
-
-
-
-
-
     public Paciente(int id, double estatura, Date fechaCreacion, Date fechaDiagnostico, double glucosaMaxima, double glucosaMinima, String numeroHistoriaClinica, double peso, String tipoDiabetes, User user) {
         this.id = id;
         this.estatura = estatura;

@@ -1,15 +1,21 @@
 package org.example.vitalance.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.websocket.Decoder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.vitalance.entidades.Mediciones;
+import org.example.vitalance.entidades.Paciente;
+import org.example.vitalance.entidades.User;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,28 +34,10 @@ public class MedicionesDTO {
     private String origen;
     private String notasValidacion;
 
-
-//relacion muchos a uno con usuarioDTO
-    @ManyToOne
-    @JoinColumn(name = "User_Id")
-    @JsonBackReference
-    private UserDTO usuario;
+    private Integer pacienteId;
+    private Long userId;
+    private Integer dispositivoId;
+    private Integer datosCrudoDispositivoId;
 
 
-    @ManyToOne
-    @JoinColumn(name = "Paciente_Id")
-    @JsonBackReference
-    private PacienteDTO paciente;
-
-    public MedicionesDTO(int id, Date fechaMedicion, String notasValidacion, String origen, String tipoMedicion, String unidad, double valor, PacienteDTO paciente, UserDTO usuario) {
-        this.id = id;
-        this.fechaMedicion = fechaMedicion;
-        this.notasValidacion = notasValidacion;
-        this.origen = origen;
-        this.tipoMedicion = tipoMedicion;
-        this.unidad = unidad;
-        this.valor = valor;
-        this.paciente = paciente;
-        this.usuario = usuario;
-    }
 }

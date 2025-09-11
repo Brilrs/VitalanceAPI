@@ -37,7 +37,7 @@ public class PacienteRestController {
     //actualizar
 
 @PutMapping("/ActualizaPaciente/{id}")
-    public String ActualizaPaciente(@PathVariable int id, @RequestBody PacienteDTO pacienteDTO){
+    public PacienteDTO ActualizaPaciente(@PathVariable int id, @RequestBody PacienteDTO pacienteDTO){
         return pacienteService.actualizarPaciente(pacienteDTO,id);
 }
 

@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,42 +34,5 @@ public class UserDTO {
     private Boolean activoUser;
 
 
-
-    //relacion de uno a uno con paciente
-    @ManyToOne(fetch = FetchType.LAZY) //muchos libros para un autor
-    @JoinColumn(name = "Role_id") // en postgress, un libro tiene un atributo id_autor que tiene el id de un autor
-    @JsonBackReference
-    private RoleDTO rol;
-
-
-
-
-    @OneToOne(mappedBy="user", cascade= CascadeType.ALL)
-    @JsonManagedReference
-    private PacienteDTO paciente;
-
-
-//relacion uno a muchos con mediciones
-    @OneToMany
-            //un usuario tiene muchas mediciones, mapeado con atributo "usuario" en clase MedicionesDTO
-   (fetch = FetchType.LAZY,mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<MedicionesDTO> mediciones = new ArrayList<>();
-
-    public UserDTO(Long idUser, String correoUser, String passwordUser, String emailUser, String nombreUser, String apellidoUser, String telefonoUser, String generoUser, LocalDate fechaNacimientoUser, LocalDateTime fechaRegistroUser, Boolean activoUser, PacienteDTO paciente, RoleDTO rol) {
-        this.idUser = idUser;
-        this.correoUser = correoUser;
-        this.passwordUser = passwordUser;
-        this.emailUser = emailUser;
-        this.nombreUser = nombreUser;
-        this.apellidoUser = apellidoUser;
-        this.telefonoUser = telefonoUser;
-        this.generoUser = generoUser;
-        this.fechaNacimientoUser = fechaNacimientoUser;
-        this.fechaRegistroUser = fechaRegistroUser;
-        this.activoUser = activoUser;
-        this.paciente = paciente;
-        this.rol = rol;
-    }
 
 }
