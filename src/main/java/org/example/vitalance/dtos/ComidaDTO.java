@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,9 +14,7 @@ import java.util.List;
 public class ComidaDTO {
     private Long idComida;
     private String nombreComida;
-    private LocalTime horaComida;
-    private BigDecimal carbohidratosTotal;
-    private Long idPaciente;
-    private String nombrePaciente;
-    private List<AlimentoComidaDTO> alimentos;
+    private LocalDateTime horaComida;
+    private Double carbohidratoTolal;
+    private PacienteDTO paciente;
 }

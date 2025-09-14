@@ -1,37 +1,39 @@
 package org.example.vitalance.entidades;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="comidas")
+@Entity
+@Table(name="Comida")
 public class Comida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idComida;
-
-    @Column(nullable = false)
     private String nombreComida;
-    
-    private LocalTime horaComida;
-    
-    private BigDecimal carbohidratosTotal;
-    
+    private LocalDateTime horaComida;
+    private Double carbohidratoTolal;
+
+    //Relacion ManyToOne con Paciente-dueño de la relacion
     @ManyToOne
-    @JoinColumn(name="idPaciente")
+    @JoinColumn(name="idPaciente",nullable = false)//FK en comidas
+    @JsonBackReference("paciente_comida")
     private Paciente paciente;
-    
-    @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AlimentoComida> alimentoComidas;
+
+    //relacion con alimentoComida-BIEN
+    //relacion con la tabla AlimentoComida,relacion bidireccional
+    @OneToMany(mappedBy = "comida",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<AlimentoComida> alimentoComida=new HashSet<>();
+
 }

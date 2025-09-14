@@ -4,31 +4,28 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "alimentos")
+@Table(name = "Alimentos")
 public class Alimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;   // PK
 
-    @Column(nullable = false)
-    private Integer nombre; // en tu DER está como int, aunque lo lógico sería String
-
-    @Column(length = 100, nullable = false)
+    private String nombre; // en tu DER está como int, aunque lo lógico sería String
     private String descripcion;
-
-    @Column(precision = 8, scale = 2, nullable = false)
-    private BigDecimal carbohidrato;
-
-    @Column(precision = 10, scale = 2, nullable = false)
-    private BigDecimal calorias;
-
-    @Column(precision = 6, scale = 2, nullable = false)
+    private Double  carbohidrato;
+    private Long calorias;
     private BigDecimal indiceGlucemico;
+
+    //relacion con la tabla AlimentoComida,relacion bidireccional
+    @OneToMany(mappedBy = "alimento",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<AlimentoComida> alimentoComida=new HashSet<>();
 }
