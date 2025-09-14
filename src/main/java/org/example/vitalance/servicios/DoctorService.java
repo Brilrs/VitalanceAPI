@@ -2,6 +2,7 @@ package org.example.vitalance.servicios;
 
 import org.example.vitalance.dtos.DoctorDTO;
 import org.example.vitalance.entidades.Doctor;
+import org.example.vitalance.entidades.User;
 import org.example.vitalance.interfaces.IDoctorService;
 import org.example.vitalance.repositorios.DoctorRepository;
 import org.example.vitalance.repositorios.UserRepository;
@@ -18,6 +19,8 @@ public class DoctorService implements IDoctorService {
     private DoctorRepository doctorRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override
@@ -26,8 +29,14 @@ public class DoctorService implements IDoctorService {
     }
     @Override
     public DoctorDTO insertar(DoctorDTO doctorDto){
-        Doctor doctor=modelMapper.map(doctorDto, Doctor.class);
-        Doctor guardado=doctorRepository.save(doctor);
+        Doctor doctorEntidad=modelMapper.map(doctorDto, Doctor.class);
+        Doctor guardado=doctorRepository.save(doctorEntidad);
+
+        //traer user desde la base de datos
+        User user =userRepository.findById(doctorDto.getUser().getIdUser())
+                .orElseThrow(()->new RuntimeException("No se encontro el user"));
+        doctorEntidad.setUser(user);
+
         return modelMapper.map(guardado,DoctorDTO.class);
     }
     @Override

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.vitalance.entidades.User;
 
 import java.time.LocalDateTime;
 @Getter
@@ -17,5 +16,5 @@ public class DoctorDTO {
     private String especialidadDoctor;
     private String clinicaDoctor;
     private LocalDateTime fechaRegistroDocto;
-    private User user;
+    private UserDTO user;
 }
