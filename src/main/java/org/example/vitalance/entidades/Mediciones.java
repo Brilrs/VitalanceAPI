@@ -23,7 +23,7 @@ public class Mediciones {
     private String tipoMedicion;
     private Double valorMedicion;
     private String unidadMedicion;
-    private LocalDate fechaMedicion;
+    private LocalDate fechaMedicicion;
     private String notaMedicion;
 
     //Relacion con la tabla Paciente-Dueño de la relacion

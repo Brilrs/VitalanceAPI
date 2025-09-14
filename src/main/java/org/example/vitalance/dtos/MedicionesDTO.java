@@ -16,7 +16,7 @@ public class MedicionesDTO {
     private String tipoMedicion;
     private Double valorMedicion;
     private String unidadMedicion;
-    private LocalDate fechaMedicion;
+    private LocalDate fechaMedicicion;
     private String notaMedicion;
     private Long idPaciente;
 }

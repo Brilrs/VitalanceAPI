@@ -75,7 +75,7 @@ public class MedicionesService implements IMediciones {
         x.setTipoMedicion(medicionesDTO.getTipoMedicion());
         x.setValorMedicion(medicionesDTO.getValorMedicion());
         x.setUnidadMedicion(medicionesDTO.getUnidadMedicion());
-        x.setFechaMedicion(medicionesDTO.getFechaMedicion());
+        x.setFechaMedicicion(medicionesDTO.getFechaMedicicion());
         x.setNotaMedicion(medicionesDTO.getNotaMedicion());
         x.setPaciente(y);
         x.setUser(z);
