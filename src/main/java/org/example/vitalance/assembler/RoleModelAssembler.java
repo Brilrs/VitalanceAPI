@@ -7,7 +7,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
+//assember
 @Component
 public class RoleModelAssembler implements RepresentationModelAssembler<RoleDTO, EntityModel<RoleDTO>> {
 
