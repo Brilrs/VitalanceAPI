@@ -1,43 +1,66 @@
 package org.example.vitalance.controllers;
 
-
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vitalance.assembler.RoleModelAssembler;
 import org.example.vitalance.dtos.RoleDTO;
-import org.example.vitalance.entidades.Role;
 import org.example.vitalance.servicios.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @Slf4j
 @RestController
 @RequestMapping("/apiRol")
+@RequiredArgsConstructor
 public class RoleController {
-    @Autowired
-    private RoleService roleService;
+
+    private final RoleService roleService;
+    private final RoleModelAssembler assembler;
 
     @GetMapping("/listarRol")
-    public List<RoleDTO> listaRol(){
-        log.info("Lista de roles");
-        return roleService.listar(); //llama al metodo de interface
+    public CollectionModel<EntityModel<RoleDTO>> listaRol() {
+        log.info("Listando roles");
+        List<EntityModel<RoleDTO>> content = roleService.listar()
+                .stream()
+                .map(assembler::toModel)
+                .toList();
+
+        return CollectionModel.of(
+                content,
+                linkTo(methodOn(RoleController.class).listaRol()).withSelfRel(),
+                linkTo(methodOn(RoleController.class).insertarRol(null)).withRel("create")
+        );
     }
+
     @PostMapping("/insertarRol")
-    public ResponseEntity<RoleDTO> insertarRol(@Valid @RequestBody RoleDTO roleDto){
-        log.info("Registrando rol {}",roleDto.getNombreRole());
-        return ResponseEntity.ok(roleService.insertar(roleDto));
+    public ResponseEntity<EntityModel<RoleDTO>> insertarRol(@Valid @RequestBody RoleDTO roleDto) {
+        RoleDTO saved = roleService.insertar(roleDto);
+        return ResponseEntity
+                .created(linkTo(methodOn(RoleController.class).buscarPorId(saved.getIdRole())).toUri())
+                .body(assembler.toModel(saved));
     }
+
     @PutMapping("/editarRol")
-    public ResponseEntity<RoleDTO>editarRol(@RequestBody RoleDTO roleDTO){
-        return ResponseEntity.ok(roleService.editar(roleDTO));
+    public ResponseEntity<EntityModel<RoleDTO>> editarRol(@RequestBody RoleDTO roleDTO) {
+        RoleDTO updated = roleService.editar(roleDTO);
+        return ResponseEntity.ok(assembler.toModel(updated));
     }
+
     @GetMapping("/ver/{id}")
-    public ResponseEntity<RoleDTO>buscarPorId(@PathVariable Long id){
-        return ResponseEntity.ok(roleService.buscarPorId(id));
+    public EntityModel<RoleDTO> buscarPorId(@PathVariable Long id) {
+        return assembler.toModel(roleService.buscarPorId(id));
     }
+
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id){
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         roleService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }
