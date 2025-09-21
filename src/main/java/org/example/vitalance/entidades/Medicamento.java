@@ -27,10 +27,6 @@ public class Medicamento {
     private LocalDate fechaMedicamento;
 
     //relacion con la tabla MedicamentoComida
-    @OneToMany(mappedBy = "medicamento")
-    private Set<MedicamentoPaciente> medicamentoPaciente=new HashSet<>();
-
-
-
-
+    @OneToMany(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MedicamentoPaciente> medicamentoPaciente = new HashSet<>();
 }
