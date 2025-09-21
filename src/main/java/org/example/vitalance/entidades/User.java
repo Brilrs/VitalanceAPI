@@ -30,7 +30,7 @@ public class User {
     private String generoUser;
     private LocalDate fechaNacimientoUser;
     private LocalDateTime fechaRegistroUser;
-    private Boolean activoUser;
+    private Boolean activoUser=true; //por defecto true
 
     //@ManyToOne(cascade = CascadeType.ALL)//cascada
     //@JoinColumn(name="idRole")
@@ -38,7 +38,7 @@ public class User {
 
     //Relacion ManyToOne con Role-BIEN HECHA
     @ManyToOne
-    @JoinColumn(name="idRole",nullable=false) //FK con Users-DUEÑO DE LA RELACION POR QUE TIENE JOIN COLUMN
+    @JoinColumn(name="idRole",nullable=false)//FK con Users-DUEÑO DE LA RELACION POR QUE TIENE JOIN COLUMN
     @JsonBackReference("role_users")
     private Role role;
 
@@ -51,12 +51,15 @@ public class User {
     private Doctor doctor;
 
     //Relacion con la tabla Paciente-Lado INVERSO con Paciente
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonBackReference("paciente_user")
-    private Paciente paciente;
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference("paciente_user")//la cascada va en el lado padre
+    private Paciente paciente;// User es el padre, Paciente es el hijo
+    //eliminar un paciente,no deberias tocar su usuario
+    //al eliminar un user si podrias borrar su paciente con cascada
 
-    //Relacion con la tabla Mediciones
-    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,orphanRemoval = true )
+    //Relacion con la tabla MEDICIONES
+    @OneToMany(mappedBy = "createdBy")
+    //nombre del atributo que esta en mediciones
     @JsonManagedReference("medicion_user")
     private List<Mediciones> mediciones=new ArrayList<>();
 }

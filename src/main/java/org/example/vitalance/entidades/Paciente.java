@@ -33,44 +33,50 @@ public class Paciente {
     private Double glucosaMinimaPaciente;
     private Double glucosaMaximaPaciente;
     private LocalDate fechaCreacionPaciente;
+    private Boolean activoPaciente=true;
+
+    //relacion con la tabla pacienteDoctor,relacion bidireccional
+    @OneToMany(mappedBy = "paciente")
+    private Set<PacienteDoctor> pacienteDoctores=new HashSet<>();
+
+    //Relacion con la tabla Mediciones
+    @OneToMany(mappedBy = "paciente")
+    @JsonManagedReference("medicion_paciente")
+    private List<Mediciones>mediciones=new ArrayList<>();
 
     //relacion con la tabla USER-PACIENTE es el dueño de la Relacion por que tiene un FK de User
     @OneToOne
-    @JoinColumn(name="idUser",nullable=false)
+    @JoinColumn(name="idUser")
     @JsonManagedReference("paciente_user")
     private User user;
 
     //Relacion con la tabla Comida
-    @OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,orphanRemoval = true)
+    //Eliminacion en cascada @OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy="paciente")
     @JsonManagedReference("paciente_comida")
     private List<Comida> comida=new ArrayList<>();
 
-    //relacion con la tabla pacienteDoctor,relacion bidireccional
-    @OneToMany(mappedBy = "paciente",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<PacienteDoctor> pacienteDoctores=new HashSet<>();
+
+
 
     //Relacion con la tabla Prediccion
-    @OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy="paciente")
     @JsonManagedReference("prediccion_paciente")
     private List<Prediccion> predicciones=new ArrayList<>();
 
     //Relacion con la tabla Recomendacion
-    @OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy="paciente")
     @JsonManagedReference("recomendacion_paciente")
     private List<Recomendacion> recomendaciones=new ArrayList<>();
 
-    //Relacion con la tabla Mediciones
-    @OneToMany(mappedBy = "paciente",cascade =CascadeType.ALL,orphanRemoval = true )
-    @JsonManagedReference("medicion_paciente")
-    private List<Mediciones>mediciones=new ArrayList<>();
 
     //Relacion con la tabla Recordatorio
-    @OneToMany(mappedBy = "paciente",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente")
     @JsonManagedReference("recordatorio_paciente")
     private List<Recordatorio>recordatorios=new ArrayList<>();
 
     //relacion con la tabla MedicamentoPaciente
-    @OneToMany(mappedBy = "paciente",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente")
     private Set<MedicamentoPaciente>medicamentoPaciente=new HashSet<>();
 
 

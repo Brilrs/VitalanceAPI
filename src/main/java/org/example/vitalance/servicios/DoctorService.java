@@ -25,7 +25,9 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<DoctorDTO>listar(){
-        return doctorRepository.findAll().stream().map(doctor -> modelMapper.map(doctor, DoctorDTO.class)).collect(Collectors.toList());
+        return doctorRepository.findByActivoDoctorTrue().stream().map(doctor -> modelMapper.map(doctor, DoctorDTO.class)).collect(Collectors.toList());
+        /*
+        return doctorRepository.findAll().stream().map(doctor -> modelMapper.map(doctor, DoctorDTO.class)).collect(Collectors.toList());*/
     }
     @Override
     public DoctorDTO insertar(DoctorDTO doctorDto){
@@ -56,9 +58,16 @@ public class DoctorService implements IDoctorService {
     }
     @Override
     public void eliminar(Long id){
+        Doctor doctor=doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor con id: "+id+" no encontrado"));
+        //Borrado Logico - user queda intacto
+        doctor.setActivoDoctor(false);
+        doctorRepository.save(doctor);
+
+        /*
         if(!doctorRepository.existsById(id)){
             throw new RuntimeException("Doctor con id: "+id+" no encontrado");
         }
         doctorRepository.deleteById(id);
+        */
     }
 }

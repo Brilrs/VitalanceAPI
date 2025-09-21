@@ -24,13 +24,11 @@ public class PacienteDoctor {
 
     private Boolean ActivoPacienteDoctor;
     private LocalDate fechaAsignacionPacienteDoctor;
-
-    //RELACION CON LA TABLA PACIENTE-BIEN
+    //RELACION CON LA TABLA PACIENTE
     @ManyToOne
     @JoinColumn(name="idPaciente",nullable=false)
     private Paciente paciente;
-
-    //RELACION CON LA TABLA DOCTOR-BIEN
+    //RELACION CON LA TABLA DOCTOR
     @ManyToOne
     @JoinColumn(name="idDoctor",nullable = false)
     private Doctor doctor;

@@ -4,6 +4,7 @@ import org.example.vitalance.dtos.UserDTO;
 import org.example.vitalance.entidades.Role;
 import org.example.vitalance.entidades.User;
 import org.example.vitalance.interfaces.IUserService;
+import org.example.vitalance.repositorios.PacienteRepository;
 import org.example.vitalance.repositorios.RoleRepository;
 import org.example.vitalance.repositorios.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -21,10 +22,19 @@ public class UserService implements IUserService {
     private RoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PacienteRepository pacienteRepository;
 
     @Override
     public List<UserDTO> listar(){
-        return userRepository.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+        return userRepository.findByActivoUserTrue().stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+        /*
+        return userRepository.findAll().stream()
+                .map(user -> modelMapper
+                        .map(user, UserDTO.class))
+                .collect(Collectors.toList());*/
     }
     @Override
     public UserDTO insertar(UserDTO userDto){
@@ -55,12 +65,17 @@ public class UserService implements IUserService {
                 .orElseThrow(()->new RuntimeException("Usuario con ID:"+id+" no encontrado"));
     }
 
+    //Borrado FISICO(delete real)->si quieres que desaparezca de la BD
+    //tienes que borrar en orden todo lo que dependa de ese user->se eliminaria el historial de medicios(y esto no es correcto en un sistema de salud
+    //Entonces, se usa borrado LOGICO
     @Override
     public void eliminar(Long id){
-        if(!userRepository.existsById(id)){
-            throw new RuntimeException("Usuario con id"+id+"no encontrado");
-        }
-        userRepository.deleteById(id);
+        //eliminar usuario sin tocar al role
+        User user=userRepository.findById(id).orElseThrow(()->new RuntimeException("Usuario con ID:"+id+" no encontrado"));
+
+        user.setActivoUser(false);//solo se desactiva al usuario
+        userRepository.save(user);
+        //modificar el listar para que solo salgan los activos
     }
 
 }

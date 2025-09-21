@@ -27,6 +27,7 @@ public class Doctor {
     private String especialidadDoctor;
     private String clinicaDoctor;
     private LocalDateTime fechaRegistroDocto;
+    private Boolean activoDoctor=true;
 
     //relacion con la tabla USERS-Doctor es el dueño de la relacion(el que tiene @JoinColumn)
     @OneToOne
@@ -34,10 +35,9 @@ public class Doctor {
     @JsonBackReference("doctor_user")//lado de atras que se ignora al serializar(evita el bucle)
     private User user;
 
-    //BIEN HECHA
     //relacion con la tabla pacienteDoctor, relacion bidireccional
     //para acceder a los vinculos desde el otro lado
-    @OneToMany(mappedBy = "doctor",cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "doctor")
     private Set<PacienteDoctor>pacienteDoctores= new HashSet<>();
 
 }

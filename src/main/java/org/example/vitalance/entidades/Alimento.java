@@ -26,6 +26,6 @@ public class Alimento {
     private BigDecimal indiceGlucemico;
 
     //relacion con la tabla AlimentoComida,relacion bidireccional
-    @OneToMany(mappedBy = "alimento",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "alimento")
     private Set<AlimentoComida> alimentoComida=new HashSet<>();
 }
