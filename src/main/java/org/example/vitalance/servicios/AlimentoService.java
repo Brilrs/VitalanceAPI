@@ -6,45 +6,51 @@ import org.example.vitalance.entidades.Alimento;
 import org.example.vitalance.repositorios.AlimentoRepository;
 import org.example.vitalance.interfaces.IAlimentoService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AlimentoService implements IAlimentoService {
-
-    private final AlimentoRepository alimentoRepository;
-    private final ModelMapper modelMapper;
-
-    private AlimentoDTO toDto(Alimento e) { return modelMapper.map(e, AlimentoDTO.class); }
-    private Alimento toEntity(AlimentoDTO d) { return modelMapper.map(d, Alimento.class); }
+    @Autowired
+    private AlimentoRepository alimentoRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public List<AlimentoDTO> listar() {
-        return alimentoRepository.findAll().stream().map(this::toDto).toList();
+    public List<AlimentoDTO> listar(){
+        return alimentoRepository.findAll().stream().map(alimento -> modelMapper.map(alimento,AlimentoDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public AlimentoDTO insertar(AlimentoDTO dto) {
-        Alimento saved = alimentoRepository.save(toEntity(dto));
-        return toDto(saved);
+    public AlimentoDTO insertar(AlimentoDTO alimento){
+        Alimento alimentoEntity = modelMapper.map(alimento, Alimento.class);
+        Alimento alimentoguardado = alimentoRepository.save(alimentoEntity);
+        return modelMapper.map(alimentoguardado,AlimentoDTO.class);
     }
 
     @Override
-    public AlimentoDTO editar(AlimentoDTO dto) {
-        Alimento updated = alimentoRepository.save(toEntity(dto));
-        return toDto(updated);
+    public AlimentoDTO editar(AlimentoDTO alimento){
+        return alimentoRepository.findById(alimento.getId()).map(existing->{
+            Alimento alimentoEntity = modelMapper.map(alimento, Alimento.class);
+            Alimento alimentoguardado = alimentoRepository.save(alimentoEntity);
+            return modelMapper.map(alimentoguardado,AlimentoDTO.class);
+        }).orElseThrow(()->new RuntimeException("Alimento no encontrado"));
     }
 
     @Override
-    public AlimentoDTO buscarPorId(Long id) {
-        return alimentoRepository.findById(id).map(this::toDto)
-                .orElseThrow(() -> new RuntimeException("Alimento no encontrado: " + id));
+    public AlimentoDTO buscarPorId(Long id){
+        return alimentoRepository.findById(id).map((element)->modelMapper.map(element,AlimentoDTO.class))
+                .orElseThrow(() -> new RuntimeException("Alimento no encontrado"));
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void eliminar(Long id){
         alimentoRepository.deleteById(id);
     }
+
 }
