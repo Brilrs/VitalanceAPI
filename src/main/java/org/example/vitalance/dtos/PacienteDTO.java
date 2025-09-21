@@ -26,6 +26,7 @@ public class PacienteDTO {
     private Double glucosaMinimaPaciente;
     private Double glucosaMaximaPaciente;
     private LocalDate fechaCreacionPaciente;
+    private Boolean activoPaciente;
     private UserDTO user;
 
 }

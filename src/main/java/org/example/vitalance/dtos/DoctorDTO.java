@@ -16,5 +16,6 @@ public class DoctorDTO {
     private String especialidadDoctor;
     private String clinicaDoctor;
     private LocalDateTime fechaRegistroDocto;
+    private Boolean activoDoctor;
     private UserDTO user;
 }

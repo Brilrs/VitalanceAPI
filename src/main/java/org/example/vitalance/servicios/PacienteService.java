@@ -27,48 +27,52 @@ private PacienteRepository pacienteRepository;
 
     @Override
     public List<PacienteDTO> listar() {
-        return pacienteRepository.findAll().stream().map(Paciente->modelMapper.map(Paciente,PacienteDTO.class)).collect(Collectors.toList());
+        return pacienteRepository.findByActivoPacienteTrue().stream().map(p -> modelMapper.map(p, PacienteDTO.class)).collect(Collectors.toList());
+        /*
+        return pacienteRepository.findAll().stream().map(paciente->modelMapper.map(paciente,PacienteDTO.class)).collect(Collectors.toList());*/
     }
 
     @Override
-    public PacienteDTO insertar(PacienteDTO pacienteDTO) { //debe existir un usuario para crear un paciente
-       User x= userRepository.findById(pacienteDTO.getUser().getIdUser()).orElseThrow(() -> new RuntimeException("Usuario con ese id no encontrado"));
-       Paciente a= modelMapper.map(pacienteDTO,Paciente.class);
-       a.setUser(x);
-       Paciente guardado= pacienteRepository.save(a);
-       return modelMapper.map(guardado,PacienteDTO.class);
+    public PacienteDTO insertar(PacienteDTO pacienteDto) { //debe existir un usuario para crear un paciente
+       Paciente pacienteEntidad=modelMapper.map(pacienteDto, Paciente.class);
+       //traer el user real desde la BD
+        User user=userRepository.findById(pacienteDto.getUser().getIdUser())
+                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        pacienteEntidad.setUser(user);
+
+        Paciente guardado=pacienteRepository.save(pacienteEntidad);
+        return modelMapper.map(guardado,PacienteDTO.class);
     }
 
     @Override
-    public PacienteDTO editar(long IdPaciente, PacienteDTO pacienteDTO) {
-        //localiza al paciente con ese id pasado
-        Paciente x=  pacienteRepository.findById(IdPaciente).orElseThrow(() -> new RuntimeException("paciente con ese id no encontrado"));
-        //LOCALIZA AL USUARIO DE ESE pacienteDTO pasado
-        User y=userRepository.findById(pacienteDTO.getUser().getIdUser()).orElseThrow(() -> new RuntimeException("Usuario del paciente con ese id no encontrado"));
-
-
-        //guarda los nuevos valores para cada atributo de el paciente encontrado
-        x.setUser(y);
-        x.setIdPaciente(IdPaciente);
-        x.setNumeroHistoriaClinicaPaciente(pacienteDTO.getNumeroHistoriaClinicaPaciente());
-        x.setTipoDiabetesPaciente(pacienteDTO.getTipoDiabetesPaciente());
-        x.setFechaDiagnosticoPaciente(pacienteDTO.getFechaDiagnosticoPaciente());
-        x.setEstaturaDiagnosticoPaciente(pacienteDTO.getEstaturaDiagnosticoPaciente());
-        x.setPesoDiagnosticoPaciente(pacienteDTO.getPesoDiagnosticoPaciente());
-        x.setGlucosaMinimaPaciente(pacienteDTO.getGlucosaMinimaPaciente());
-        x.setGlucosaMaximaPaciente(pacienteDTO.getGlucosaMaximaPaciente());
-        x.setFechaCreacionPaciente(pacienteDTO.getFechaCreacionPaciente());
-      Paciente g= pacienteRepository.save(x);
-        return modelMapper.map(g,PacienteDTO.class);
+    public PacienteDTO editar( PacienteDTO pacienteDto) {
+        return pacienteRepository.findById(pacienteDto.getIdPaciente()).
+                map(existing -> {
+                    Paciente pacienteEntidad = modelMapper.map(pacienteDto, Paciente.class);
+                    Paciente guardado = pacienteRepository.save(pacienteEntidad);
+                    return modelMapper.map(guardado, PacienteDTO.class);
+                }).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
     }
 
     @Override
     public PacienteDTO buscarPorId(Long id) {
-        return modelMapper.map(pacienteRepository.findById(id),PacienteDTO.class);
+        return pacienteRepository.findById(id).map((element)->modelMapper.map(element,PacienteDTO.class)).orElseThrow(()->new RuntimeException("Paciente no encontrado"));
     }
 
     @Override
     public void eliminar(Long id) {
-pacienteRepository.deleteById(id);
+        Paciente paciente=pacienteRepository.findById(id).orElseThrow(()->new RuntimeException("Paciente no encontrado"));
+        //borrado logico
+        paciente.setActivoPaciente(false);
+        pacienteRepository.save(paciente);
+
+        /*
+        Paciente paciente=pacienteRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("Paciente no encontrado"));
+        System.out.println("eliminando paciente"+paciente.getIdPaciente());
+        paciente.setUser(null); //solo si quieres romper la FK antes de eliminar
+        pacienteRepository.save(paciente);//guardar
+        //ahora si eliminar
+        pacienteRepository.delete(paciente);*/
     }
 }

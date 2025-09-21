@@ -23,7 +23,9 @@ public class RoleService implements IRoleService {
 
     @Override
     public List<RoleDTO> listar(){
-        return roleRepository.findAll().stream().map(role->modelMapper.map(role,RoleDTO.class))
+        return roleRepository.findAll()
+                .stream()
+                .map(role->modelMapper.map(role,RoleDTO.class))
                 .collect(Collectors.toList());
     }
 

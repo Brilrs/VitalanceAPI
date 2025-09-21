@@ -6,9 +6,9 @@ import org.example.vitalance.dtos.PacienteDTO;
 import java.util.List;
 
 public interface IPacienteService {
-    List<PacienteDTO> listar();
-    PacienteDTO insertar(PacienteDTO pacienteDTO);
-    public PacienteDTO editar(long IdPaciente,PacienteDTO pacienteDTO);
-    PacienteDTO buscarPorId(Long id);
+    public List<PacienteDTO> listar();
+    public PacienteDTO insertar(PacienteDTO paciente);
+    public PacienteDTO editar(PacienteDTO paciente);
+    public PacienteDTO buscarPorId(Long id);
     public void eliminar(Long id);
 }

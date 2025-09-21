@@ -18,5 +18,7 @@ public class MedicionesDTO {
     private String unidadMedicion;
     private LocalDate fechaMedicicion;
     private String notaMedicion;
-    private Long idPaciente;
+    private PacienteDTO paciente;
+    private UserDTO createdBy;//autor de la medicion
+
 }

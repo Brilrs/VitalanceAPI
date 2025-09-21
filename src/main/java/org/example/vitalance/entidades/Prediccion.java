@@ -21,18 +21,13 @@ public class Prediccion {
     private String tipoPrediccion;
     private Double probabilidadPrediccion;
 
-
-    @Column(name = "promtPrediccion",nullable = true, columnDefinition = "TEXT")
+    @Column(name = "promptPrediccion",nullable = true, columnDefinition = "TEXT")
     private String promptPrediccion;
-
     @Column(name = "respuestaTextoPrediccion",nullable = true, columnDefinition = "TEXT")
     private String respuestaTextoPrediccion;
-
     //RELACION CON LA TABLA PACIENTE-
     @ManyToOne
     @JoinColumn(name="idPaciente",nullable = false)
     @JsonBackReference("prediccion_paciente")
     private Paciente paciente;
-
-
 }

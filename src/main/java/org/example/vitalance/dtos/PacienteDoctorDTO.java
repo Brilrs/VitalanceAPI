@@ -19,7 +19,9 @@ public class PacienteDoctorDTO {
     private Long idPacienteDoctor;
     private Boolean ActivoPacienteDoctor;
     private LocalDate fechaAsignacionPacienteDoctor;
-
-    private PacienteDTO paciente;
-    private DoctorDTO doctor;
+    //Solo lo basico, no toda la entidad ni user
+    //por que modelmapper explota por que trata de mapear toda la jerarquia
+    //NO incluir los DTO completos de Paciente y Doctor, porque esos a su vez traen UserDTO, y ahí se forma la recursión.
+    private Long idPaciente;
+    private Long idDoctor;
 }

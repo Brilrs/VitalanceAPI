@@ -28,13 +28,17 @@ public class Mediciones {
 
     //Relacion con la tabla Paciente-Dueño de la relacion
     @ManyToOne
-    @JoinColumn(name="idPaciente",nullable = false)//FK en Medicion
+    @JoinColumn(name="idPaciente",nullable = false)//FK de paciente en Medicion
     @JsonBackReference("medicion_paciente")
-    private Paciente paciente;
+    private Paciente paciente;//el paciente al que le pertenece la medicion
 
-    //Relacion con la tabla User
+
+
+
+    //Relacion con el USUARIO que registro la medicion
     @ManyToOne
-    @JoinColumn(name="idUser",nullable = false)//FK en medicion
+    @JoinColumn(name="created_by_user_id",nullable = false)//FK de user  en medicion
     @JsonBackReference("medicion_user")
-    private User user;
+    private User createdBy; //el usuario que digito la medicion
+
 }
