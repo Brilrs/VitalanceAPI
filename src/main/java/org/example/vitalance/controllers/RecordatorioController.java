@@ -2,6 +2,7 @@ package org.example.vitalance.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.RecordatorioDTO;
 import org.example.vitalance.servicios.RecordatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,7 @@ public class RecordatorioController {
     public void eliminar(@PathVariable Long id){
         recordatorioService.eliminar(id);
     }
+
+
 
 }
