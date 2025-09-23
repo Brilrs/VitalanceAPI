@@ -2,6 +2,8 @@ package org.example.vitalance.servicios;
 
 import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.PacienteDTO;
+import org.example.vitalance.dtos.PacienteNivelesDeGlucosaDTO;
+import org.example.vitalance.entidades.Mediciones;
 import org.example.vitalance.entidades.Paciente;
 import org.example.vitalance.entidades.Recordatorio;
 import org.example.vitalance.entidades.User;
@@ -11,7 +13,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +32,8 @@ public class PacienteService implements IPacienteService {
 
     @Autowired
     private PacienteRepository pacienteRepository;
-
+@Autowired
+private MedicionesRepository medicionesRepository;
     @Override
     public List<PacienteDTO> listar() {
         return pacienteRepository.findByActivoPacienteTrue().stream().map(p -> modelMapper.map(p, PacienteDTO.class)).collect(Collectors.toList());
@@ -125,5 +130,39 @@ public class PacienteService implements IPacienteService {
 
         return dto;
 
+    }
+
+    @Override
+    public List<PacienteNivelesDeGlucosaDTO> NivelesDeGlucosa(long idPacienteAbuscar, LocalDate fechaDeMedicion) {
+        //verificamos que el paciente exista
+        Paciente x = pacienteRepository.findById(idPacienteAbuscar).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        //obtenemos todas las mediciones de ese paciente identificado
+        List<Mediciones> medicionesDePaciente = medicionesRepository.findAllByPaciente(x);
+
+        //lista personalizada de nivelesdeglucosadelpaciente que se mostrara al final
+        List<PacienteNivelesDeGlucosaDTO>listapers=new ArrayList<>();
+
+
+        //recorremos la lista para encontrar las mediciones de ese paciente identificado, que cumplen con la fecha entregada
+        for (Mediciones m : medicionesDePaciente) {
+            if (m.getFechaMedicicion().equals(fechaDeMedicion)) {
+                PacienteNivelesDeGlucosaDTO dto = new PacienteNivelesDeGlucosaDTO();
+                dto.setIdPaciente(x.getIdPaciente());
+                dto.setFechaMedicicion(fechaDeMedicion);
+                dto.setEstaturaDiagnosticoPaciente(x.getEstaturaDiagnosticoPaciente());
+                dto.setPesoDiagnosticoPaciente(x.getPesoDiagnosticoPaciente());
+                dto.setValorMedicion(m.getValorMedicion());
+                dto.setNotaMedicion(m.getNotaMedicion());
+                dto.setUnidadMedicion(m.getUnidadMedicion());
+
+                listapers.add(dto); // se añade a la lista personalizada, considere que un paciente puede tener mas de un registro en una fecha, por eso hice que se agregase a una lista
+            }
+
+        }
+
+
+
+        return listapers;
     }
 }

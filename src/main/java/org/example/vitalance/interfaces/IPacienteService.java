@@ -1,10 +1,8 @@
 package org.example.vitalance.interfaces;
 
-import org.example.vitalance.dtos.AlertaGlucosaDTO;
-import org.example.vitalance.dtos.DoctorDTO;
-import org.example.vitalance.dtos.PacienteDTO;
-import org.example.vitalance.dtos.RecordatorioDTO;
+import org.example.vitalance.dtos.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IPacienteService {
@@ -16,6 +14,7 @@ public interface IPacienteService {
 
     //HU-035
     AlertaGlucosaDTO procesarAlerta(AlertaGlucosaDTO dto);
-
+//US-028
+    public List<PacienteNivelesDeGlucosaDTO> NivelesDeGlucosa(long idPacienteAbuscar, LocalDate fechaDeMedicion);
 
 }

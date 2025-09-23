@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.MedicionesDTO;
 import org.example.vitalance.dtos.PacienteDTO;
+import org.example.vitalance.dtos.PacienteNivelesDeGlucosaDTO;
 import org.example.vitalance.servicios.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @Slf4j
 @RestController
@@ -52,6 +55,10 @@ public class PacienteController {
        AlertaGlucosaDTO respuesta = pacienteService.procesarAlerta(dto);
        return ResponseEntity.ok(respuesta);
 
+   }
+   @GetMapping("/MostrarNivelesDeGlucosaDePacienteResumido/{idpaciente}/{fecha}")
+    public List<PacienteNivelesDeGlucosaDTO>NivelGlucosaPacienteResumido(@PathVariable long idpaciente, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha){
+       return pacienteService.NivelesDeGlucosa(idpaciente,fecha);
    }
 
 }
