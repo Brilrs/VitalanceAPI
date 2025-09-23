@@ -2,6 +2,7 @@ package org.example.vitalance.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.MedicionesDTO;
 import org.example.vitalance.dtos.PacienteDTO;
 import org.example.vitalance.servicios.PacienteService;
@@ -41,6 +42,16 @@ public class PacienteController {
    @GetMapping("/ver/{id}")
     public ResponseEntity<PacienteDTO>buscarPorId(@PathVariable Long id){
        return ResponseEntity.ok(pacienteService.buscarPorId(id));
+   }
+
+   @PostMapping("/{id}/alertaGlucosa")
+    public ResponseEntity<AlertaGlucosaDTO>procesarAlertaGlucosa(
+            @PathVariable Long id,
+            @RequestBody AlertaGlucosaDTO dto){
+       dto.setIdPaciente(id);
+       AlertaGlucosaDTO respuesta = pacienteService.procesarAlerta(dto);
+       return ResponseEntity.ok(respuesta);
+
    }
 
 }

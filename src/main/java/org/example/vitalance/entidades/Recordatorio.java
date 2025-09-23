@@ -9,6 +9,7 @@ import lombok.Setter;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -23,7 +24,7 @@ public class Recordatorio {
     private Long idRecordatorio;
     private String tipoRecordatorio;
     private Boolean estadoRecordatorio;
-    private LocalDate fechaCreacionRecordatorio;
+    private LocalDateTime fechaCreacionRecordatorio;
     private LocalTime horaProgramadaRecordatorio;
 
     //Relacion con la tabla Paciente

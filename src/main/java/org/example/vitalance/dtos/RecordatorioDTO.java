@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.example.vitalance.entidades.Paciente;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class RecordatorioDTO {
     private Long idRecordatorio;
     private String tipoRecordatorio;
     private Boolean estadoRecordatorio;
-    private LocalDate fechaCreacionRecordatorio;
+    private LocalDateTime fechaCreacionRecordatorio;
     private LocalTime horaProgramadaRecordatorio;
     private PacienteDTO paciente;
 }
