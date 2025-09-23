@@ -32,8 +32,8 @@ public class PacienteService implements IPacienteService {
 
     @Autowired
     private PacienteRepository pacienteRepository;
-@Autowired
-private MedicionesRepository medicionesRepository;
+    @Autowired
+    private MedicionesRepository medicionesRepository;
     @Override
     public List<PacienteDTO> listar() {
         return pacienteRepository.findByActivoPacienteTrue().stream().map(p -> modelMapper.map(p, PacienteDTO.class)).collect(Collectors.toList());
