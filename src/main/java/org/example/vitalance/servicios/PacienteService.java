@@ -114,6 +114,7 @@ public class PacienteService implements IPacienteService {
 
         //Guarda en el Recordatorio en la BD para ver la logica de los 30 minutos
         Recordatorio recordatorio = new Recordatorio();
+
         recordatorio.setPaciente(paciente);
         recordatorio.setFechaCreacionRecordatorio(ahora);
         recordatorio.setTipoRecordatorio("ALERTA_GLUCOSA");
