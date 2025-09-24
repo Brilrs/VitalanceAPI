@@ -2,6 +2,7 @@ package org.example.vitalance.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vitalance.dtos.AccionRecordatorioDTO;
 import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.RecordatorioDTO;
 import org.example.vitalance.servicios.RecordatorioService;
@@ -43,5 +44,18 @@ public class RecordatorioController {
     }
 
 
+    // ====== US 09======
+    @PostMapping("/disparar-pendientes")
+    public ResponseEntity<List<RecordatorioDTO>> dispararPendientes(){
+        return ResponseEntity.ok(recordatorioService.dispararPendientes());
+    }
+
+    // Tomado/Posponer
+    @PostMapping("/{id}/accion")
+    public ResponseEntity<Void> accionar(@PathVariable Long id,
+                                         @RequestBody AccionRecordatorioDTO body) {
+        recordatorioService.accionar(id, body);
+        return ResponseEntity.noContent().build();
+    }
 
 }
