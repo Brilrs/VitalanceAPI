@@ -14,7 +14,6 @@ import java.util.List;
 //asdasd
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/apiAlimento")
 public class    AlimentoController {
     @Autowired

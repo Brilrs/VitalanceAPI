@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@Service
-@RequiredArgsConstructor
+@RestController
 @RequestMapping("/apiMedicamentopaciente")
 public class MedicamentoPacienteController {
     @Autowired

@@ -11,14 +11,12 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class MedicamentoPacienteDTO {
     private Long idMedicamento;
-    private String nombreMedicamento;
-    private String tipoMedicamento;
-    private Integer unidadMedicamento;
-    private String dosisMedicamento;
-    private LocalDate fechaMedicamento;
+    private String frecuenciaMedicamento;
+    private LocalDate fechaInicioMedicamento;
+    private LocalDate fechaFinMedicamento;
+    private Boolean estadoMedicamento;
     private MedicamentoDTO medicamento;
     private PacienteDTO paciente;
 }
