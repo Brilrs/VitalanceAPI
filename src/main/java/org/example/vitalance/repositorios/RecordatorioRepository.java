@@ -15,6 +15,12 @@ public interface RecordatorioRepository extends JpaRepository<Recordatorio, Long
     boolean existsByPaciente_IdPacienteAndFechaCreacionRecordatorioAfter(
             Long idPaciente, LocalDateTime fecha);
 
+    boolean existsByPaciente_IdPacienteAndTipoRecordatorioAndEstadoRecordatorio(
+            Long idPaciente,
+            String tipoRecordatorio,
+            Boolean estadoRecordatorio
+    );
+
     @Query("SELECT r FROM Recordatorio r JOIN r.paciente p JOIN p.user u " +
             "WHERE LOWER(u.nombreUser) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
             "OR LOWER(u.apellidoUser) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
