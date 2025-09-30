@@ -33,7 +33,7 @@ public class Comida {
 
     //relacion con alimentoComida-BIEN
     //relacion con la tabla AlimentoComida,relacion bidireccional
-    @OneToMany(mappedBy = "comida")
+    @OneToMany(mappedBy = "comida",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<AlimentoComida> alimentoComida=new HashSet<>();
 
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "Alimentos")
-public class Alimento {
+public class   Alimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,11 @@ public class Alimento {
 
     private String nombre; // en tu DER está como int, aunque lo lógico sería String
     private String descripcion;
-    private Double  carbohidrato;
-    private Long calorias;
-    private BigDecimal indiceGlucemico;
+    private Double carbohidrato;
+    private Double calorias;
+    private Double indiceGlucemico;
 
     //relacion con la tabla AlimentoComida,relacion bidireccional
-    @OneToMany(mappedBy = "alimento")
+    @OneToMany(mappedBy = "alimento",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<AlimentoComida> alimentoComida=new HashSet<>();
 }
