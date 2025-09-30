@@ -11,6 +11,9 @@ import org.example.vitalance.repositorios.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.example.vitalance.entidades.*;
+import org.example.vitalance.repositorios.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +28,15 @@ public class MedicionesService implements IMedicionesService {
     private PacienteRepository pacienteRepository;
     @Autowired
     private MedicionesRepository medicionesRepository;
+    @Autowired
+    private UmbralRepository umbralRepository;
+    @Autowired
+    private PacienteDoctorRepository pacienteDoctorRepository;
+    @Autowired
+    private AlertaRepository alertaRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
+
 
     @Override
     public List<MedicionesDTO>listar(){
@@ -35,20 +47,52 @@ public class MedicionesService implements IMedicionesService {
     }
 
     @Override
-    public MedicionesDTO insertar(MedicionesDTO medicionesDto){
-        Mediciones medicionesEntidad=modelMapper.map(medicionesDto, Mediciones.class);
-        //traer el paciente real desde la BD(dueño de la medicion)
-        Paciente paciente=pacienteRepository.findById(medicionesDto.getPaciente().getIdPaciente())
-                .orElseThrow(()->new RuntimeException("No se encontro el paciente"));
-        medicionesEntidad.setPaciente(paciente);
-        //Traer el usuario real desde la BD(autor que registro la medicion)
-        User autor = userRepository.findById(medicionesDto.getCreatedBy().getIdUser())
-                .orElseThrow(() -> new RuntimeException("No se encontró el autor"));
-        medicionesEntidad.setCreatedBy(autor);
+    @Transactional
+    public MedicionesDTO insertar(MedicionesDTO medicionesDTO) {
+        // 1) Persistir la medición
+        Mediciones entidad = modelMapper.map(medicionesDTO, Mediciones.class);
 
-        Mediciones guardado=medicionesRepository.save(medicionesEntidad);
-        return modelMapper.map(guardado,MedicionesDTO.class);
+        // asegurar referencias a Paciente y User (IDs vienen dentro del DTO)
+        Paciente paciente = pacienteRepository.findById(medicionesDTO.getPaciente().getIdPaciente())
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+        User autor = userRepository.findById(medicionesDTO.getCreatedBy().getIdUser())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        entidad.setPaciente(paciente);
+        entidad.setCreatedBy(autor);
+
+        Mediciones guardada = medicionesRepository.save(entidad);
+
+        // 2) Buscar los doctores asignados al paciente y sus umbrales activos del tipo
+        List<PacienteDoctor> vinculos = pacienteDoctorRepository.findAll().stream()
+                .filter(v -> v.getPaciente().getIdPaciente().equals(paciente.getIdPaciente()))
+                .filter(v -> Boolean.TRUE.equals(v.getActivoPacienteDoctor()))
+                .toList();
+
+        for (PacienteDoctor vinc : vinculos) {
+            Doctor doc = vinc.getDoctor();
+            List<Umbral> umbrales = umbralRepository
+                    .findByDoctorAndTipoIndicadorIgnoreCaseAndActivoTrue(doc, guardada.getTipoMedicion());
+            for (Umbral u : umbrales) {
+                boolean supera = false;
+                if (u.getMinimo()!=null && guardada.getValorMedicion() < u.getMinimo()) supera = true;
+                if (u.getMaximo()!=null && guardada.getValorMedicion() > u.getMaximo()) supera = true;
+
+                if (supera) {
+                    Alerta alerta = new Alerta();
+                    alerta.setTipoIndicador(guardada.getTipoMedicion());
+                    alerta.setValor(guardada.getValorMedicion());
+                    alerta.setUnidad(guardada.getUnidadMedicion());
+                    alerta.setSeveridad("CRITICA");       // por defecto cuando supera umbral
+                    alerta.setEstado("PENDIENTE");
+                    alerta.setPaciente(paciente);
+                    alerta.setDoctor(doc);
+                    alerta.setMedicion(guardada);
+                    alertaRepository.save(alerta);
+                }
+            }
+        }
+        return modelMapper.map(guardada, MedicionesDTO.class);
     }
 
     @Override
