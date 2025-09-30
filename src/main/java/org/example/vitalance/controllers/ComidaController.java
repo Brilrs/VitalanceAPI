@@ -37,12 +37,12 @@ public class ComidaController {
         return ResponseEntity.ok(comidaService.editar(comidaDTO));
     }
 
-    @GetMapping("/ver/{id}")
+    @GetMapping("/ver/{idComida}")
     public ResponseEntity<ComidaDTO> buscarPorId(@PathVariable Long idComida){
         return ResponseEntity.ok(comidaService.buscarPorId(idComida));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idComida}")
     public void eliminar(@PathVariable Long idComida){
         comidaService.eliminar(idComida);
     }

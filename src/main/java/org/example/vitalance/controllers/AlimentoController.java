@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/apiAlimento")
-public class AlimentoController {
+public class    AlimentoController {
     @Autowired
     private AlimentoService alimentoService;
 

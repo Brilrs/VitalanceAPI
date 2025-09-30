@@ -38,12 +38,12 @@ public class MedicamentoPacienteController {
         return ResponseEntity.ok(medicamentoPacienteService.editar(medicamentoPacienteDTO));
     }
 
-    @GetMapping("/ver/{id}")
+    @GetMapping("/ver/{idMedicamentoPaciente}")
     public ResponseEntity<MedicamentoPacienteDTO> buscarPorId(@PathVariable Long idMedicamentoPaciente){
         return  ResponseEntity.ok(medicamentoPacienteService.buscarPorId(idMedicamentoPaciente));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idMedicamentoPaciente}")
     public void eliminar(@PathVariable Long idMedicamentoPaciente){
         medicamentoPacienteService.eliminar(idMedicamentoPaciente);
     }

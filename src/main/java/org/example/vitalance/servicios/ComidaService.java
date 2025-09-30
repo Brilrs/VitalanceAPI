@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.vitalance.dtos.ComidaDTO;
 import org.example.vitalance.entidades.Comida;
+import org.example.vitalance.entidades.Paciente;
 import org.example.vitalance.interfaces.IComidaService;
 import org.example.vitalance.repositorios.ComidaRepository;
+import org.example.vitalance.repositorios.PacienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class ComidaService implements IComidaService {
     @Autowired
     private ComidaRepository comidaRepository;
     @Autowired
+    private PacienteRepository pacienteRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -32,6 +36,9 @@ public class ComidaService implements IComidaService {
     @Override
     public ComidaDTO insertar(ComidaDTO comidaDTO) {
         Comida comidaEntity = modelMapper.map(comidaDTO, Comida.class);
+        Paciente paciente = pacienteRepository.findById(comidaDTO.getPaciente().getIdPaciente())
+                .orElseThrow(()->new RuntimeException("No se encuentra"));
+        comidaEntity.setPaciente(paciente);
         Comida comidaguardada = comidaRepository.save(comidaEntity);
         return modelMapper.map(comidaguardada, ComidaDTO.class);
     }
