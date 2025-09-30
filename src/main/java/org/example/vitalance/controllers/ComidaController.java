@@ -14,7 +14,6 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/apiComida")
 public class ComidaController {
     @Autowired

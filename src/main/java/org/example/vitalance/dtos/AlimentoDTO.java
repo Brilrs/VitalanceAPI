@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class AlimentoDTO {
     private Long id;
-    private Integer nombre; // o String si corregimos
+    private String nombre; // o String si corregimos
     private String descripcion;
     private Double carbohidrato;
     private Double calorias;
