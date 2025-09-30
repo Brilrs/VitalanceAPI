@@ -11,6 +11,7 @@ public interface IRecordatorioService {
     public RecordatorioDTO editar(RecordatorioDTO recordatorio);
     public RecordatorioDTO buscarPorId(Long id);
     public void eliminar(Long id);
+    public List<RecordatorioDTO> filtrarPorPaciente(String filtro);
 
 
 }

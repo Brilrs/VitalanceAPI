@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -42,6 +44,21 @@ public class RecordatorioController {
         recordatorioService.eliminar(id);
     }
 
+    @GetMapping("/filtrar")
+    public ResponseEntity<?> filtrarPorPaciente(@RequestParam(name = "paciente") String filtro) {
+        log.info("Filtrando alertas con parámetro: {}", filtro);
 
+        List<RecordatorioDTO> resultados = recordatorioService.filtrarPorPaciente(filtro);
+
+        // Si no hay resultados, retornar mensaje informativo
+        if (resultados.isEmpty()) {
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("mensaje", "No se encontraron alertas para el paciente especificado");
+            respuesta.put("resultados", resultados);
+            return ResponseEntity.ok(respuesta);
+        }
+
+        return ResponseEntity.ok(resultados);
+    }
 
 }
