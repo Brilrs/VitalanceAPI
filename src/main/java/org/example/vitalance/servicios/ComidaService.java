@@ -37,7 +37,7 @@ public class ComidaService implements IComidaService {
     public ComidaDTO insertar(ComidaDTO comidaDTO) {
         Comida comidaEntity = modelMapper.map(comidaDTO, Comida.class);
         Paciente paciente = pacienteRepository.findById(comidaDTO.getPaciente().getIdPaciente())
-                .orElseThrow(()->new RuntimeException("No se encuentra"));
+               .orElseThrow(()->new RuntimeException("No se encuentra"));
         comidaEntity.setPaciente(paciente);
         Comida comidaguardada = comidaRepository.save(comidaEntity);
         return modelMapper.map(comidaguardada, ComidaDTO.class);
