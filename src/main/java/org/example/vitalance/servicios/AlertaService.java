@@ -58,4 +58,20 @@ public class AlertaService implements IAlertaService {
         alertaRepository.saveAll(pendientes);
         return pendientes.size();
     }
+
+    @Override
+    public int autoescalarCriticasNoRevisadas() {
+        LocalDateTime horaLimite = LocalDateTime.now().minusMinutes(15);
+        System.out.println("horaLimite = " + horaLimite);
+
+        List<Alerta> criticas = alertaRepository
+                .findByEstadoAndSeveridadAndCreadaEnBefore("PENDIENTE", "CRITICA", horaLimite);
+
+
+        criticas.forEach(a -> a.setEstado("AUTO_ARCHIVADA"));
+        alertaRepository.saveAll(criticas);
+        alertaRepository.flush();
+
+        return criticas.size();
+    }
 }
