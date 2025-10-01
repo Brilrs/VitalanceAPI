@@ -10,4 +10,5 @@ public interface IAlertaService {
     AlertaDTO marcarRevisada(Long idAlerta);
     List<AlertaDTO> resumenDiario(Long idDoctor, LocalDate dia);
     int autoArchivarNoCriticas24h(); // utilidad para HU negativa
+    int autoescalarCriticasNoRevisadas(); //us-20
 }

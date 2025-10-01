@@ -20,4 +20,6 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
                                    @Param("fin") LocalDateTime fin);
 
     List<Alerta> findByEstadoAndSeveridadAndCreadaEnBefore(String estado, String severidad, LocalDateTime limite);
+
+    List<Alerta> findByEstadoAndSeveridadAndCreadaEnAfter(String estado, String severidad, LocalDateTime creadaEnAfter);
 }
