@@ -23,16 +23,14 @@ public class Role {
 
     @Column(unique = true) //no puedes tener dos roles con el mismo nombre
     private String nombreRole;//columna nombre_role
-
-    //Relacion OneToMany con User
+    //Relacion OneToMany con SecurityUser
     @OneToMany(mappedBy="role")//LADO INVERSO POR QUE USA mappedBy
     @JsonManagedReference("role_users")//evita ciclos infinitos en Json
     private List<User> users=new ArrayList<>();
 
-
     //@JsonManagedReference y @JsonBackReference evita el loop infinito al serializar a JSON
     //Role->muestra su lista de Users
-    //User->no vuelve a mostrar el Role otra vez
+    //SecurityUser->no vuelve a mostrar el Role otra vez
     //CascadeType.ALL :Si borras un Role,se borran tambien sus Users
     //mappedBy="role" significa que la relacion esta mapeada en la propiedad role de Users
 

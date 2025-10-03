@@ -2,10 +2,12 @@ package org.example.vitalance.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vitalance.dtos.RegisterUserDTO;
 import org.example.vitalance.dtos.UserDTO;
 import org.example.vitalance.servicios.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +19,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    //ENDPOINTS DE USUARIOS
     @GetMapping("/listarUser")
     public List<UserDTO> listarUser() {
         log.info("Listando users");
         return userService.listar(); //llama al metodo de intefaces
     }
+    //registro de usuarios(desde el frontend)
+    @PostMapping("/registrar")
+    public ResponseEntity<UserDTO> registrarUser(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
+        log.info("Registrando nuevo usuario {}", registerUserDTO.getCorreoUser());
+        return ResponseEntity.ok(userService.registrar(registerUserDTO));
+    }
+
     @PostMapping("/insertarUser")
     public ResponseEntity<UserDTO> insertarUser(@Valid @RequestBody UserDTO userDto) {
         log.info("Registrado usuario {}", userDto.getNombreUser());
@@ -41,4 +52,6 @@ public class UserController {
     public void eliminar(@PathVariable Long id){
         userService.eliminar(id);
     }
+
+    //Asignación de Roles, Asegurar endpoints
 }

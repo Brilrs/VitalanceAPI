@@ -8,6 +8,7 @@ import org.example.vitalance.entidades.Comida;
 import org.example.vitalance.servicios.ComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ComidaController {
     private ComidaService comidaService;
 
     @GetMapping("/listarComida")
+    @PreAuthorize("hasRole('PACIENTE')")
     public List<ComidaDTO> listarComida(){
         log.info("ComidaController listarComida");
         return comidaService.listar();
