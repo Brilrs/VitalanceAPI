@@ -23,6 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
+    private String passwordUser;
     private String correoUser;
     private String nombreUser;
     private String apellidoUser;
@@ -53,7 +54,7 @@ public class User {
     //Relacion con la tabla Paciente-Lado INVERSO con Paciente
     @OneToOne(mappedBy = "user")
     @JsonBackReference("paciente_user")//la cascada va en el lado padre
-    private Paciente paciente;// User es el padre, Paciente es el hijo
+    private Paciente paciente;// SecurityUser es el padre, Paciente es el hijo
     //eliminar un paciente,no deberias tocar su usuario
     //al eliminar un user si podrias borrar su paciente con cascada
 

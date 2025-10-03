@@ -52,7 +52,7 @@ public class MedicionesService implements IMedicionesService {
         // 1) Persistir la medición
         Mediciones entidad = modelMapper.map(medicionesDTO, Mediciones.class);
 
-        // asegurar referencias a Paciente y User (IDs vienen dentro del DTO)
+        // asegurar referencias a Paciente y SecurityUser (IDs vienen dentro del DTO)
         Paciente paciente = pacienteRepository.findById(medicionesDTO.getPaciente().getIdPaciente())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
         User autor = userRepository.findById(medicionesDTO.getCreatedBy().getIdUser())
