@@ -1,13 +1,14 @@
 package org.example.vitalance.entidades;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime; // <--- Importado para manejar las horas específicas
+import java.util.List; // <--- Importado para la lista de horas
 
 @Getter
 @Setter
@@ -23,6 +24,15 @@ public class MedicamentoPaciente {
     private LocalDate fechaInicioMedicamento;
     private LocalDate fechaFinMedicamento;
     private Boolean estadoMedicamento;
+
+    // CAMPO CLAVE AGREGADO para la programación de recordatorios (US-009)
+    // Usamos @ElementCollection para almacenar una colección de valores primitivos (LocalTime)
+    // en una tabla separada, mapeando una relación uno a muchos simple.
+    @ElementCollection
+    @CollectionTable(name = "medicamento_paciente_horas", joinColumns = @JoinColumn(name = "idMedicamentoPaciente"))
+    @Column(name = "hora_programada")
+    private List<LocalTime> horasProgramadas;
+
 
     //RELACION CON MEDICAMENTO FK
     @ManyToOne
