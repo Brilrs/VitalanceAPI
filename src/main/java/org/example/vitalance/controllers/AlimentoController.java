@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.vitalance.dtos.AlimentoDTO;
 import org.example.vitalance.interfaces.IAlimentoService;
+import org.example.vitalance.servicios.AlimentoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,36 +14,35 @@ import java.util.List;
 //asdasd
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/apiAlimento")
-public class AlimentoController {
+public class    AlimentoController {
+    @Autowired
+    private AlimentoService alimentoService;
 
-    private final IAlimentoService alimentoService;
-
-    @GetMapping("/listar")
-    public List<AlimentoDTO> listar() {
-        log.info("Listando alimentos");
+    @GetMapping("/listarAlimento")
+    public List<AlimentoDTO> listarAlimentos(){
+        log.info("Iniciando lista de alimentos");
         return alimentoService.listar();
     }
 
-    @PostMapping("/insertar")
-    public ResponseEntity<AlimentoDTO> insertar(@Valid @RequestBody AlimentoDTO dto) {
-        log.info("Insertando alimento {}", dto.getDescripcion());
-        return ResponseEntity.ok(alimentoService.insertar(dto));
+    @PostMapping("/insertarAlimento")
+    public ResponseEntity<AlimentoDTO> insertarAlimento(@Valid @RequestBody AlimentoDTO alimento){
+        log.info("Iniciando alimento {}",alimento.getNombre());
+        return ResponseEntity.ok(alimentoService.insertar(alimento));
     }
 
-    @PutMapping("/editar")
-    public ResponseEntity<AlimentoDTO> editar(@RequestBody AlimentoDTO dto) {
-        return ResponseEntity.ok(alimentoService.editar(dto));
+    @PutMapping("/editarAlimento")
+    public ResponseEntity<AlimentoDTO> editarAlimento(@RequestBody AlimentoDTO alimento){
+        return ResponseEntity.ok(alimentoService.editar(alimento));
     }
 
     @GetMapping("/ver/{id}")
-    public ResponseEntity<AlimentoDTO> ver(@PathVariable Long id) {
+    public ResponseEntity<AlimentoDTO> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(alimentoService.buscarPorId(id));
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable Long id){
         alimentoService.eliminar(id);
     }
 }

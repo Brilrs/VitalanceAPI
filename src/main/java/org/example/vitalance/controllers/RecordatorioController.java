@@ -2,7 +2,6 @@ package org.example.vitalance.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.example.vitalance.dtos.AccionRecordatorioDTO;
 import org.example.vitalance.dtos.AlertaGlucosaDTO;
 import org.example.vitalance.dtos.RecordatorioDTO;
 import org.example.vitalance.servicios.RecordatorioService;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -43,19 +44,21 @@ public class RecordatorioController {
         recordatorioService.eliminar(id);
     }
 
+    @GetMapping("/filtrar")
+    public ResponseEntity<?> filtrarPorPaciente(@RequestParam(name = "paciente") String filtro) {
+        log.info("Filtrando alertas con parámetro: {}", filtro);
 
-    // ====== US 09======
-    @PostMapping("/disparar-pendientes")
-    public ResponseEntity<List<RecordatorioDTO>> dispararPendientes(){
-        return ResponseEntity.ok(recordatorioService.dispararPendientes());
-    }
+        List<RecordatorioDTO> resultados = recordatorioService.filtrarPorPaciente(filtro);
 
-    // Tomado/Posponer
-    @PostMapping("/{id}/accion")
-    public ResponseEntity<Void> accionar(@PathVariable Long id,
-                                         @RequestBody AccionRecordatorioDTO body) {
-        recordatorioService.accionar(id, body);
-        return ResponseEntity.noContent().build();
+        // Si no hay resultados, retornar mensaje informativo
+        if (resultados.isEmpty()) {
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("mensaje", "No se encontraron alertas para el paciente especificado");
+            respuesta.put("resultados", resultados);
+            return ResponseEntity.ok(respuesta);
+        }
+
+        return ResponseEntity.ok(resultados);
     }
 
 }

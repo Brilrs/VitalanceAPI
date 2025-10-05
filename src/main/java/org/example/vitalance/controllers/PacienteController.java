@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.vitalance.servicios.DeteccionInactividadService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +22,8 @@ public class PacienteController {
 
    @Autowired
     private PacienteService pacienteService;
+   @Autowired
+   private DeteccionInactividadService deteccionInactividadService;
 
    @GetMapping("/listarPaciente")
     public List<PacienteDTO> listarPaciente(){
@@ -60,5 +63,23 @@ public class PacienteController {
     public List<PacienteNivelesDeGlucosaDTO>NivelGlucosaPacienteResumido(@PathVariable long idpaciente, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha){
        return pacienteService.NivelesDeGlucosa(idpaciente,fecha);
    }
+
+    @GetMapping("/inactivos")
+    public ResponseEntity<List<DeteccionInactividadService.PacienteInactivoDTO>>
+    obtenerPacientesInactivos(
+            @RequestParam(name = "diasSinMedicion", defaultValue = "7") int diasUmbral
+    ) {
+
+        if (diasUmbral < 1) {
+            throw new IllegalArgumentException("El umbral de días debe ser mayor a 0");
+        }
+
+        List<DeteccionInactividadService.PacienteInactivoDTO> pacientes =
+                deteccionInactividadService.obtenerPacientesInactivos(diasUmbral);
+
+        return ResponseEntity.ok(pacientes);
+    }
+
+
 
 }

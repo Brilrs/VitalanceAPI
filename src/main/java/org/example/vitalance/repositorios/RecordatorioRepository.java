@@ -1,31 +1,30 @@
 package org.example.vitalance.repositorios;
 
-import org.example.vitalance.entidades.Paciente;
 import org.example.vitalance.entidades.Recordatorio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Repository
 public interface RecordatorioRepository extends JpaRepository<Recordatorio, Long> {
-    //usando metodos derivados (JPA)
-    boolean existsByPaciente_IdPacienteAndFechaCreacionRecordatorioAfter(Long idPaciente, LocalDateTime fecha);
 
-    //US 09
-    @Query("""
-     SELECT r
-       FROM Recordatorio r
-      WHERE r.estadoRecordatorio = TRUE
-        AND r.horaProgramadaRecordatorio <= :horaActual
-        AND (r.ultimoEnvioAt IS NULL OR
-             (r.reintentos = 1 AND r.ultimoEnvioAt <= :haceDiezMin))
-        AND (r.reintentos IS NULL OR r.reintentos < 2)
-  """)
-    List<Recordatorio> findDue(LocalTime horaActual, LocalDateTime haceDiezMin);
+    boolean existsByPaciente_IdPacienteAndFechaCreacionRecordatorioAfter(
+            Long idPaciente, LocalDateTime fecha);
 
+    boolean existsByPaciente_IdPacienteAndTipoRecordatorioAndEstadoRecordatorio(
+            Long idPaciente,
+            String tipoRecordatorio,
+            Boolean estadoRecordatorio
+    );
+
+    @Query("SELECT r FROM Recordatorio r JOIN r.paciente p JOIN p.user u " +
+            "WHERE LOWER(u.nombreUser) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
+            "OR LOWER(u.apellidoUser) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
+            "OR LOWER(p.numeroHistoriaClinicaPaciente) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
+            "ORDER BY r.fechaCreacionRecordatorio DESC")
+    List<Recordatorio> findByPacienteFiltro(@Param("filtro") String filtro);
 }

@@ -57,8 +57,6 @@ public class Paciente {
     private List<Comida> comida=new ArrayList<>();
 
 
-
-
     //Relacion con la tabla Prediccion
     @OneToMany(mappedBy="paciente")
     @JsonManagedReference("prediccion_paciente")

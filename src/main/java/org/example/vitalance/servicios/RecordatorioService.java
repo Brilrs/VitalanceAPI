@@ -59,6 +59,20 @@ public class RecordatorioService implements IRecordatorioService {
         }
         recordatorioRepository.deleteById(id);
     }
+    @Override
+    public List<RecordatorioDTO> filtrarPorPaciente(String filtro) {
+        // Validar que el filtro no esté vacío
+        if (filtro == null || filtro.trim().isEmpty()) {
+            throw new IllegalArgumentException("El parámetro de búsqueda es requerido");
+        }
+
+        List<Recordatorio> recordatorios = recordatorioRepository.findByPacienteFiltro(filtro);
+
+        // Mapear a DTO usando ModelMapper
+        return recordatorios.stream()
+                .map(r -> modelMapper.map(r, RecordatorioDTO.class))
+                .collect(Collectors.toList());
+    }
 
     // ====== US 09 ======
     @Override
