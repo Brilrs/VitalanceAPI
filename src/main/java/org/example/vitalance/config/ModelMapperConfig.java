@@ -21,15 +21,15 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
 
-        // Romper ciclo Paciente -> User
+        // Romper ciclo Paciente -> SecurityUser
         mapper.createTypeMap(PacienteDTO.class, Paciente.class,
 
                         mapper.getConfiguration().copy().setImplicitMappingEnabled(false))
                 .addMappings(m -> m.skip(Paciente::setUser));
 
-        // Romper ciclo User -> Paciente
-        mapper.createTypeMap(UserDTO.class, User.class, mapper.getConfiguration().copy().setImplicitMappingEnabled(false))
-                .addMappings(m -> m.skip(User::setPaciente));
+        // Romper ciclo SecurityUser -> Paciente
+        mapper.createTypeMap(UserDTO.class, SecurityUser.class, mapper.getConfiguration().copy().setImplicitMappingEnabled(false))
+                .addMappings(m -> m.skip(SecurityUser::setPaciente));
 
         return mapper;
 

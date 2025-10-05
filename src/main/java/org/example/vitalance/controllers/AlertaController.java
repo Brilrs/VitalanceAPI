@@ -41,4 +41,11 @@ public class AlertaController {
         int n = alertaService.autoArchivarNoCriticas24h();
         return ResponseEntity.ok("Auto-archivadas: " + n);
     }
+
+    //auto escalar criticas luego de 15 min de creadas
+    @PostMapping("/auto-escalarCriticas")
+    public ResponseEntity<String> autoescalarCriticas(){
+        int n = alertaService.autoescalarCriticasNoRevisadas();
+        return ResponseEntity.ok("Auto-escaladas: " + n);
+    }
 }

@@ -44,7 +44,7 @@ public class Paciente {
     @JsonManagedReference("medicion_paciente")
     private List<Mediciones>mediciones=new ArrayList<>();
 
-    //relacion con la tabla USER-PACIENTE es el dueño de la Relacion por que tiene un FK de User
+    //relacion con la tabla USER-PACIENTE es el dueño de la Relacion por que tiene un FK de SecurityUser
     @OneToOne
     @JoinColumn(name="idUser")
     @JsonManagedReference("paciente_user")

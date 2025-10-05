@@ -1,5 +1,5 @@
 package org.example.vitalance.servicios;
-
+import org.example.vitalance.dtos.RegisterUserDTO;
 import org.example.vitalance.dtos.UserDTO;
 import org.example.vitalance.entidades.Role;
 import org.example.vitalance.entidades.User;
@@ -9,8 +9,10 @@ import org.example.vitalance.repositorios.RoleRepository;
 import org.example.vitalance.repositorios.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,8 @@ public class UserService implements IUserService {
     private ModelMapper modelMapper;
     @Autowired
     private PacienteRepository pacienteRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder; //para encriptar contraseñas
 
     @Override
     public List<UserDTO> listar(){
@@ -36,6 +40,7 @@ public class UserService implements IUserService {
                         .map(user, UserDTO.class))
                 .collect(Collectors.toList());*/
     }
+    //Registrar un Usuario->encriptar contraseña(passwordEncoder) y asignar el rol
     @Override
     public UserDTO insertar(UserDTO userDto){
         User userEntidad=modelMapper.map(userDto, User.class);
@@ -76,6 +81,32 @@ public class UserService implements IUserService {
         user.setActivoUser(false);//solo se desactiva al usuario
         userRepository.save(user);
         //modificar el listar para que solo salgan los activos
+    }
+
+    //Metodo para registro seguro de usuarios
+    public UserDTO registrar(RegisterUserDTO registerUserDTO){
+        // llenar solo los campos de RegisterUserDTO
+        User userEntidad = new User();
+        // llenar solo los campos de RegisterUserDTO
+        userEntidad.setCorreoUser(registerUserDTO.getCorreoUser());
+        userEntidad.setPasswordUser(passwordEncoder.encode(registerUserDTO.getPasswordUser())); // encriptar
+        userEntidad.setNombreUser(registerUserDTO.getNombreUser());
+        userEntidad.setApellidoUser(registerUserDTO.getApellidoUser());
+        userEntidad.setTelefonoUser(registerUserDTO.getTelefonoUser());
+        userEntidad.setGeneroUser(registerUserDTO.getGeneroUser());
+        userEntidad.setFechaNacimientoUser(registerUserDTO.getFechaNacimientoUser());
+        // valores que el frontend no manda
+        userEntidad.setFechaRegistroUser(LocalDateTime.now());
+        userEntidad.setActivoUser(true);
+
+        // buscar el rol
+        Role role = roleRepository.findById(registerUserDTO.getIdRole())
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+        userEntidad.setRole(role);
+
+        User guardado = userRepository.save(userEntidad);
+        // devolver un DTO (sin password)
+        return modelMapper.map(guardado, UserDTO.class);
     }
 
 }
