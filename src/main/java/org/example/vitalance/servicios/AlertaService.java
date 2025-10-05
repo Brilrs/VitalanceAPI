@@ -1,9 +1,11 @@
 package org.example.vitalance.servicios;
 
 import org.example.vitalance.dtos.AlertaDTO;
-import org.example.vitalance.entidades.*;
+import org.example.vitalance.entidades.Alerta;
+import org.example.vitalance.entidades.Doctor;
 import org.example.vitalance.interfaces.IAlertaService;
-import org.example.vitalance.repositorios.*;
+import org.example.vitalance.repositorios.AlertaRepository;
+import org.example.vitalance.repositorios.DoctorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

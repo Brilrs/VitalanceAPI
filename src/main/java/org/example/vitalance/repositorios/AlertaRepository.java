@@ -1,6 +1,8 @@
 package org.example.vitalance.repositorios;
 
-import org.example.vitalance.entidades.*;
+import org.example.vitalance.entidades.Alerta;
+import org.example.vitalance.entidades.Doctor;
+import org.example.vitalance.entidades.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +24,11 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     List<Alerta> findByEstadoAndSeveridadAndCreadaEnBefore(String estado, String severidad, LocalDateTime limite);
 
     List<Alerta> findByEstadoAndSeveridadAndCreadaEnAfter(String estado, String severidad, LocalDateTime creadaEnAfter);
+
+    /**
+     * US-024: Usado para buscar alertas de un tipo específico (ej., OMISION_MEDICACION)
+     * para un paciente y doctor, permitiendo evitar duplicados o verificar historial.
+     */
+    List<Alerta> findByTipoIndicadorAndPacienteAndDoctor(String tipoIndicador, Paciente paciente, Doctor doctor);
+
 }
