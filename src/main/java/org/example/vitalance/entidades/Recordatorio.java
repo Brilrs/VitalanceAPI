@@ -27,15 +27,10 @@ public class Recordatorio {
     private LocalDateTime fechaCreacionRecordatorio;
     private LocalTime horaProgramadaRecordatorio;
 
-    //US 09
-    private LocalDateTime ultimoEnvioAt;            // último push enviado
-    private Short reintentos = 0;                   // número de reintentos realizados
-
     //Relacion con la tabla Paciente
     @ManyToOne
     @JoinColumn(name="idPaciente",nullable = false)
     @JsonBackReference("recordatorio_paciente")
     private Paciente paciente;
-
 
 }

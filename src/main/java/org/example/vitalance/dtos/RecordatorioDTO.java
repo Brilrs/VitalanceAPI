@@ -24,9 +24,4 @@ public class RecordatorioDTO {
     private LocalDateTime fechaCreacionRecordatorio;
     private LocalTime horaProgramadaRecordatorio;
     private PacienteDTO paciente;
-
-    //US 09
-    private LocalDateTime ultimoEnvioAt;            // último push enviado
-    private Short reintentos;                   // número de reintentos realizados
-
 }
