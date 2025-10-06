@@ -6,6 +6,7 @@ import org.example.vitalance.dtos.TeleconsultaDTO;
 import org.example.vitalance.interfaces.ITeleconsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,14 @@ public class TeleconsultaController {
     @Autowired
     private ITeleconsultaService teleconsultaService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/listar")
     public List<TeleconsultaDTO> listar() {
         log.info("Listando teleconsultas");
         return teleconsultaService.listar();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PostMapping("/solicitar")
     public ResponseEntity<TeleconsultaDTO> solicitar(@Valid @RequestBody TeleconsultaDTO dto) {
         log.info("Solicitando teleconsulta para paciente {} con doctor {} en fecha {}",
@@ -31,11 +34,13 @@ public class TeleconsultaController {
         return ResponseEntity.ok(teleconsultaService.solicitar(dto));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{id}")
     public ResponseEntity<TeleconsultaDTO> ver(@PathVariable Long id) {
         return ResponseEntity.ok(teleconsultaService.buscarPorId(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @DeleteMapping("/cancelar/{id}")
     public void cancelar(@PathVariable Long id) {
         teleconsultaService.cancelar(id);
