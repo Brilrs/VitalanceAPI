@@ -134,7 +134,6 @@ public class RecomendacionAlimentariaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
     /**
      * Endpoint de ayuda: Listar tipos de comida válidos
      * GET /apiRecomendaciones/tiposComida
@@ -151,10 +150,8 @@ public class RecomendacionAlimentariaController {
                 "CENA", "Última comida del día (18:00 - 21:00)",
                 "SNACK", "Refrigerio entre comidas"
         ));
-
         return ResponseEntity.ok(respuesta);
     }
-
     /**
      * Endpoint de health check específico
      * GET /apiRecomendaciones/health
