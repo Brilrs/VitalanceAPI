@@ -1,9 +1,11 @@
 package org.example.vitalance.servicios;
 
 import org.example.vitalance.dtos.AlertaDTO;
-import org.example.vitalance.entidades.*;
+import org.example.vitalance.entidades.Alerta;
+import org.example.vitalance.entidades.Doctor;
 import org.example.vitalance.interfaces.IAlertaService;
-import org.example.vitalance.repositorios.*;
+import org.example.vitalance.repositorios.AlertaRepository;
+import org.example.vitalance.repositorios.DoctorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +59,21 @@ public class AlertaService implements IAlertaService {
         pendientes.forEach(a -> a.setEstado("AUTO_ARCHIVADA"));
         alertaRepository.saveAll(pendientes);
         return pendientes.size();
+    }
+
+    @Override
+    public int autoescalarCriticasNoRevisadas() {
+        LocalDateTime horaLimite = LocalDateTime.now().minusMinutes(15);
+        System.out.println("horaLimite = " + horaLimite);
+
+        List<Alerta> criticas = alertaRepository
+                .findByEstadoAndSeveridadAndCreadaEnBefore("PENDIENTE", "CRITICA", horaLimite);
+
+
+        criticas.forEach(a -> a.setEstado("AUTO_ARCHIVADA"));
+        alertaRepository.saveAll(criticas);
+        alertaRepository.flush();
+
+        return criticas.size();
     }
 }

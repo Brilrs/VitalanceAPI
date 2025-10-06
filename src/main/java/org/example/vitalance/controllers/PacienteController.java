@@ -66,7 +66,7 @@ public class PacienteController {
        return ResponseEntity.ok(respuesta);
 
    }
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE','DOCTOR')")
+
    @GetMapping("/MostrarNivelesDeGlucosaDePacienteResumido/{idpaciente}/{fecha}")
     public List<PacienteNivelesDeGlucosaDTO>NivelGlucosaPacienteResumido(@PathVariable long idpaciente, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha){
        return pacienteService.NivelesDeGlucosa(idpaciente,fecha);
