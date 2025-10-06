@@ -21,28 +21,33 @@ public class AlimentoComidaController {
     @Autowired
     private AlimentoComidaService alimentoComidaService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/listarAC")
     public List<AlimentoComidaDTO> listarAC(){
         log.info("Iniciando lista de alimentos y comidas");
         return alimentoComidaService.listar();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PostMapping("/insertarAC")
     public ResponseEntity<AlimentoComidaDTO> insertarAC(@Valid @RequestBody AlimentoComidaDTO alimentoComidaDTO){
         log.info("Iniciando alimento de comidas {}", alimentoComidaDTO.getCantidadAlimentoComida());
         return ResponseEntity.ok(alimentoComidaService.insertar(alimentoComidaDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PutMapping("/editarAC")
     public ResponseEntity<AlimentoComidaDTO> editarAC(@RequestBody AlimentoComidaDTO alimentoComidaDTO){
         return ResponseEntity.ok(alimentoComidaService.editar(alimentoComidaDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{idAlimentoComida}")
     public ResponseEntity<AlimentoComidaDTO> buscarPorId(@PathVariable Long idAlimentoComida){
         return ResponseEntity.ok(alimentoComidaService.buscarPorId(idAlimentoComida));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @DeleteMapping("/{idAlimentoComida}")
     public void eliminar(@PathVariable Long idAlimentoComida){
         alimentoComidaService.eliminar(idAlimentoComida);

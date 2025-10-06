@@ -39,6 +39,8 @@ public class MedicamentoPacienteController {
     @Autowired
     private IRecordatorioService recordatorioService;
 
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/listarMP")
     public List<MedicamentoPacienteDTO> listarMP(){
         log.info("Iniciando lista de MedicamentoPaciente");
@@ -46,6 +48,8 @@ public class MedicamentoPacienteController {
     }
 
     // --- PUNTO CLAVE PARA US-009 ---
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @PostMapping("/insertarMP")
     public ResponseEntity<MedicamentoPacienteDTO> insertarMP(@Valid @RequestBody MedicamentoPacienteDTO medicamentoPacienteDTO){
         // Usamos el ID de Medicamento para el log, asumiendo que el DTO tiene getIdMedicamento()
@@ -63,17 +67,23 @@ public class MedicamentoPacienteController {
     }
     // --------------------------------
 
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PutMapping("/editarMP")
     public ResponseEntity<MedicamentoPacienteDTO> editarMP(@RequestBody MedicamentoPacienteDTO medicamentoPacienteDTO){
         // El scheduler global gestionará los cambios de estado (activo/inactivo) en la siguiente pasada.
         return ResponseEntity.ok(medicamentoPacienteService.editar(medicamentoPacienteDTO));
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{idMedicamentoPaciente}")
     public ResponseEntity<MedicamentoPacienteDTO> buscarPorId(@PathVariable Long idMedicamentoPaciente){
         return  ResponseEntity.ok(medicamentoPacienteService.buscarPorId(idMedicamentoPaciente));
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @DeleteMapping("/{idMedicamentoPaciente}")
     public void eliminar(@PathVariable Long idMedicamentoPaciente){
         medicamentoPacienteService.eliminar(idMedicamentoPaciente);

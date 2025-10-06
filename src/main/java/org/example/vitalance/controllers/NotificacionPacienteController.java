@@ -13,12 +13,14 @@ public class NotificacionPacienteController {
 
     @Autowired private NotificacionPacienteService service;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @GetMapping("/paciente/{idPaciente}")
     public ResponseEntity<List<NotificacionPacienteDTO>> listar(@PathVariable Long idPaciente){
         return ResponseEntity.ok(service.listarPorPaciente(idPaciente));
     }
 
     // Botón: "Compartir con mi médico"
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PostMapping("/{idNotificacion}/compartir")
     public ResponseEntity<NotificacionPacienteDTO> compartir(@PathVariable Long idNotificacion){
         return ResponseEntity.ok(service.compartirConMedico(idNotificacion));
