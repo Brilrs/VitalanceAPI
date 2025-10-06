@@ -5,6 +5,7 @@ import org.example.vitalance.servicios.AlertaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -46,7 +47,7 @@ public class AlertaController {
     //auto escalar criticas luego de 15 min de creadas
 
     @PostMapping("/auto-escalarCriticas")
-@PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     public ResponseEntity<String> autoescalarCriticas(){
         int n = alertaService.autoescalarCriticasNoRevisadas();
         return ResponseEntity.ok("Auto-escaladas: " + n);
