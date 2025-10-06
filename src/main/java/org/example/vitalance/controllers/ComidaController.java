@@ -20,8 +20,8 @@ public class ComidaController {
     @Autowired
     private ComidaService comidaService;
 
-    @GetMapping("/listarComida")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
+    @GetMapping("/listarComida")
     public List<ComidaDTO> listarComida(){
         log.info("ComidaController listarComida");
         return comidaService.listar();

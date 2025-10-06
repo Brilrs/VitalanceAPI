@@ -50,8 +50,8 @@ public class AlertaController {
 
     //auto escalar criticas luego de 15 min de creadas
 
-    @PostMapping("/auto-escalarCriticas")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
+    @PostMapping("/auto-escalarCriticas")
     public ResponseEntity<String> autoescalarCriticas(){
         int n = alertaService.autoescalarCriticasNoRevisadas();
         return ResponseEntity.ok("Auto-escaladas: " + n);
