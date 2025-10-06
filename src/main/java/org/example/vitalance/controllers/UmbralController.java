@@ -3,6 +3,7 @@ package org.example.vitalance.controllers;
 import org.example.vitalance.dtos.UmbralDTO;
 import org.example.vitalance.servicios.UmbralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

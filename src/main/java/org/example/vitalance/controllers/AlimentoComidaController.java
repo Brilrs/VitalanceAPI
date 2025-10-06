@@ -8,6 +8,7 @@ import org.example.vitalance.repositorios.AlimentoComidaRepository;
 import org.example.vitalance.servicios.AlimentoComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 

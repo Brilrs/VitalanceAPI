@@ -7,6 +7,7 @@ import org.example.vitalance.dtos.MedicamentoPacienteDTO;
 import org.example.vitalance.servicios.MedicamentoPacienteService;
 import org.example.vitalance.servicios.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
