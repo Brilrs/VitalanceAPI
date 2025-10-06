@@ -6,6 +6,7 @@ import org.example.vitalance.dtos.PacienteDoctorDTO;
 import org.example.vitalance.servicios.PacienteDoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,22 +18,28 @@ import java.util.List;
 public class PacienteDoctorController {
     @Autowired
     private PacienteDoctorService pacienteDoctorService;
+
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @GetMapping("/listarPD")
     public List<PacienteDoctorDTO> listarPacienteDoctor(){
         return pacienteDoctorService.listar();//llama al metodo de la interface
     }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PostMapping("/insertarPD")
     public ResponseEntity<PacienteDoctorDTO>insertarPacienteDoctor(@Valid @RequestBody PacienteDoctorDTO pdDto){
         return ResponseEntity.ok(pacienteDoctorService.insertar(pdDto));
     }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PutMapping("editarPD")
     public ResponseEntity<PacienteDoctorDTO>editarPacienteDoctor(@RequestBody PacienteDoctorDTO pdDto){
         return ResponseEntity.ok(pacienteDoctorService.editar(pdDto));
     }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{id}")
     public ResponseEntity<PacienteDoctorDTO> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(pacienteDoctorService.buscarPorId(id));
     }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id){
         pacienteDoctorService.eliminar(id);

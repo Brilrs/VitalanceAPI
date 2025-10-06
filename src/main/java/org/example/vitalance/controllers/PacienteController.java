@@ -10,6 +10,7 @@ import org.example.vitalance.servicios.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.example.vitalance.servicios.DeteccionInactividadService;
 
@@ -25,31 +26,37 @@ public class PacienteController {
    @Autowired
    private DeteccionInactividadService deteccionInactividadService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
    @GetMapping("/listarPaciente")
     public List<PacienteDTO> listarPaciente(){
        log.info("Listando pacientes");
        return pacienteService.listar();
    }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
    @PostMapping("/insertarPaciente")
     public ResponseEntity<PacienteDTO>insertarPaciente(@Valid @RequestBody PacienteDTO pacienteDto){
        log.info("Insertando paciente, fecha creacion {}",pacienteDto.getFechaCreacionPaciente());
        return ResponseEntity.ok(pacienteService.insertar(pacienteDto));
    }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
    @PutMapping("/editarPaciente")
     public ResponseEntity<PacienteDTO> editarPaciente(@RequestBody PacienteDTO pacienteDTO){
        return ResponseEntity.ok(pacienteService.editar(pacienteDTO));
    }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
    @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id){
        pacienteService.eliminar(id);
    }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE','DOCTOR')")
    @GetMapping("/ver/{id}")
     public ResponseEntity<PacienteDTO>buscarPorId(@PathVariable Long id){
        return ResponseEntity.ok(pacienteService.buscarPorId(id));
    }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
    @PostMapping("/{id}/alertaGlucosa")
     public ResponseEntity<AlertaGlucosaDTO>procesarAlertaGlucosa(
             @PathVariable Long id,
@@ -59,11 +66,13 @@ public class PacienteController {
        return ResponseEntity.ok(respuesta);
 
    }
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE','DOCTOR')")
    @GetMapping("/MostrarNivelesDeGlucosaDePacienteResumido/{idpaciente}/{fecha}")
     public List<PacienteNivelesDeGlucosaDTO>NivelGlucosaPacienteResumido(@PathVariable long idpaciente, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha){
        return pacienteService.NivelesDeGlucosa(idpaciente,fecha);
    }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @GetMapping("/inactivos")
     public ResponseEntity<List<DeteccionInactividadService.PacienteInactivoDTO>>
     obtenerPacientesInactivos(
@@ -79,7 +88,5 @@ public class PacienteController {
 
         return ResponseEntity.ok(pacientes);
     }
-
-
 
 }
