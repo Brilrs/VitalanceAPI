@@ -12,21 +12,25 @@ import java.util.List;
 public class UmbralController {
     @Autowired private UmbralService umbralService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PostMapping
     public ResponseEntity<UmbralDTO> crear(@RequestBody UmbralDTO dto){
         return ResponseEntity.ok(umbralService.crear(dto));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PutMapping
     public ResponseEntity<UmbralDTO> actualizar(@RequestBody UmbralDTO dto){
         return ResponseEntity.ok(umbralService.actualizar(dto));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PatchMapping("/{id}/activo/{flag}")
     public void activar(@PathVariable Long id, @PathVariable boolean flag){
         umbralService.activar(id, flag);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @GetMapping("/doctor/{idDoctor}")
     public ResponseEntity<List<UmbralDTO>> listar(@PathVariable Long idDoctor){
         return ResponseEntity.ok(umbralService.listarPorDoctor(idDoctor));

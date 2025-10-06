@@ -19,28 +19,33 @@ public class    AlimentoController {
     @Autowired
     private AlimentoService alimentoService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/listarAlimento")
     public List<AlimentoDTO> listarAlimentos(){
         log.info("Iniciando lista de alimentos");
         return alimentoService.listar();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PostMapping("/insertarAlimento")
     public ResponseEntity<AlimentoDTO> insertarAlimento(@Valid @RequestBody AlimentoDTO alimento){
         log.info("Iniciando alimento {}",alimento.getNombre());
         return ResponseEntity.ok(alimentoService.insertar(alimento));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @PutMapping("/editarAlimento")
     public ResponseEntity<AlimentoDTO> editarAlimento(@RequestBody AlimentoDTO alimento){
         return ResponseEntity.ok(alimentoService.editar(alimento));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{id}")
     public ResponseEntity<AlimentoDTO> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(alimentoService.buscarPorId(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR')")
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id){
         alimentoService.eliminar(id);

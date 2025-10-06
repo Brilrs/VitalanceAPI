@@ -30,3 +30,4 @@ public class Medicamento {
     @OneToMany(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MedicamentoPaciente> medicamentoPaciente = new HashSet<>();
 }
+//odi

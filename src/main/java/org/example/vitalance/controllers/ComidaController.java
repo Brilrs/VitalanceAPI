@@ -21,28 +21,32 @@ public class ComidaController {
     private ComidaService comidaService;
 
     @GetMapping("/listarComida")
-    @PreAuthorize("hasRole('PACIENTE')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     public List<ComidaDTO> listarComida(){
         log.info("ComidaController listarComida");
         return comidaService.listar();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PostMapping("/insertarComida")
     public ResponseEntity<ComidaDTO> insertarComida(@Valid @RequestBody ComidaDTO comidaDTO) {
         log.info("Iniciando Comida {}", comidaDTO.getNombreComida());
         return ResponseEntity.ok(comidaService.insertar(comidaDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PutMapping("/editarComida")
     public ResponseEntity<ComidaDTO> editarComida(@RequestBody ComidaDTO comidaDTO) {
         return ResponseEntity.ok(comidaService.editar(comidaDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/ver/{idComida}")
     public ResponseEntity<ComidaDTO> buscarPorId(@PathVariable Long idComida){
         return ResponseEntity.ok(comidaService.buscarPorId(idComida));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @DeleteMapping("/{idComida}")
     public void eliminar(@PathVariable Long idComida){
         comidaService.eliminar(idComida);
