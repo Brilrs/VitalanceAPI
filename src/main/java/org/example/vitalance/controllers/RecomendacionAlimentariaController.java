@@ -8,6 +8,7 @@ import org.example.vitalance.servicios.RecomendacionAlimentariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class RecomendacionAlimentariaController {
      * Endpoint principal: Generar recomendaciones alimenticias
      * POST /apiRecomendaciones/generar
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PostMapping("/generar")
     public ResponseEntity<?> generarRecomendaciones(
             @Valid @RequestBody RecomendacionRequestDTO request) {
@@ -75,6 +77,7 @@ public class RecomendacionAlimentariaController {
      * Endpoint: Validar si un paciente tiene datos suficientes
      * GET /apiRecomendaciones/validar/{idPaciente}
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/validar/{idPaciente}")
     public ResponseEntity<Map<String, Object>> validarDatosPaciente(
             @PathVariable Long idPaciente) {
@@ -113,6 +116,7 @@ public class RecomendacionAlimentariaController {
      * Endpoint: Obtener historial de recomendaciones
      * GET /apiRecomendaciones/historial/{idPaciente}
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/historial/{idPaciente}")
     public ResponseEntity<List<RecomendacionAlimentariaDTO>> obtenerHistorial(
             @PathVariable Long idPaciente) {
@@ -135,6 +139,7 @@ public class RecomendacionAlimentariaController {
      * Endpoint de ayuda: Listar tipos de comida válidos
      * GET /apiRecomendaciones/tiposComida
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @GetMapping("/tiposComida")
     public ResponseEntity<Map<String, Object>> listarTiposComida() {
 
@@ -154,6 +159,7 @@ public class RecomendacionAlimentariaController {
      * Endpoint de health check específico
      * GET /apiRecomendaciones/health
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> healthCheck() {
         Map<String, String> health = new HashMap<>();

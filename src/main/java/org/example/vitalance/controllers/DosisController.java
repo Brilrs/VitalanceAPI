@@ -8,6 +8,7 @@ import org.example.vitalance.dtos.SolicitudConfirmacionDosisDTO;
 import org.example.vitalance.interfaces.IDosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class DosisController {
      * @param requestDTO DTO con los detalles de la confirmación.
      * @return Respuesta HTTP de éxito.
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','PACIENTE')")
     @PostMapping("/confirmar")
     public ResponseEntity<?> confirmarToma(@Valid @RequestBody SolicitudConfirmacionDosisDTO requestDTO) {
         log.info("Recibida solicitud de confirmación de Dosis ID: {} con acción: {}",
@@ -45,6 +47,7 @@ public class DosisController {
      * @param idPaciente ID del paciente para filtrar el historial.
      * @return Lista de DosisDTO (historial de tomas y omisiones).
      */
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DOCTOR','PACIENTE')")
     @GetMapping("/historial/paciente/{idPaciente}")
     public ResponseEntity<List<DosisDTO>> listarHistorialPorPaciente(@PathVariable Long idPaciente) {
         log.info("Buscando historial de dosis para Paciente ID: {}", idPaciente);
