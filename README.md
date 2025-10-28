@@ -38,8 +38,12 @@ spring.jpa.hibernate.ddl-auto=update
 mvn clean install
 mvn spring-boot:run
 
+
 5.Acceder a la API (por defecto en http://localhost:8080)
+
+
 Endpoints principales
+
 
 POST /usuarios – Registrar un nuevo paciente o profesional
 GET /usuarios/{id} – Obtener información de un usuario
@@ -47,6 +51,7 @@ POST /mediciones – Registrar medición de salud
 GET /alertas – Consultar alertas activas
 GET /mediciones/{usuarioId} – Listar historial de mediciones de un usuario
 (Se recomienda usar herramientas como Postman o Swagger para probar la API)
+
 
 Estructura del proyecto
 src/main/java
