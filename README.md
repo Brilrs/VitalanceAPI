@@ -63,7 +63,9 @@ GET /mediciones/{usuarioId} – Listar historial de mediciones de un usuario
 (Se recomienda usar herramientas como Postman o Swagger para probar la API)
 
 
-Estructura del proyecto
+## Estructura del proyecto
+
+
 src/main/java
 │
 ├── controller     # Controladores REST
