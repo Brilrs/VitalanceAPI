@@ -67,21 +67,18 @@ GET /mediciones/{usuarioId} – Listar historial de mediciones de un usuario
 
 
 src/
-└── main/
-├── java/
-│ └── com/tuempresa/proyecto/
-│ ├── controller/ # Controladores REST
-│ ├── model/ # Clases de entidad y DTOs
-│ ├── repository/ # Interfaces para acceso a datos
-│ ├── service/ # Lógica de negocio
-│ └── config/ # Configuración (seguridad, base de datos, etc.)
-│
-└── resources/
-├── application.properties # Configuración de la base de datos
-├── application.yml # Alternativa de configuración YAML
-└── static/ # Recursos estáticos (si aplica)
-
-src/
+├── main/
+│ ├── java/
+│ │ └── com/tuempresa/proyecto/
+│ │ ├── controller/ # Controladores REST
+│ │ ├── model/ # Clases de entidad y DTOs
+│ │ ├── repository/ # Interfaces para acceso a datos
+│ │ ├── service/ # Lógica de negocio
+│ │ └── config/ # Configuración (seguridad, base de datos, etc.)
+│ └── resources/
+│ ├── application.properties # Configuración de la base de datos
+│ ├── application.yml # Alternativa de configuración YAML
+│ └── static/ # Recursos estáticos (si aplica)
 └── test/
 └── java/
 └── com/tuempresa/proyecto/
