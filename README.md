@@ -28,10 +28,16 @@ git clone https://github.com/tu-usuario/nombre-del-proyecto.git
 2. Entrar al proyecto:
 cd nombre-del-proyecto
 
-3.Configurar la base de datos en src/main/resources/application.properties o application.yml. Por ejemplo, para MySQL:
+3.Configurar la base de datos en src/main/resources/application.properties o application.yml. 
+
+Por ejemplo, para MySQL:
+
 spring.datasource.url=jdbc:mysql://localhost:3306/diabetesdb
+
 spring.datasource.username=root
+
 spring.datasource.password=tu_contraseña
+
 spring.jpa.hibernate.ddl-auto=update
 
 4. Compilar y ejecutar con Maven:
