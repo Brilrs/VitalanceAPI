@@ -63,26 +63,40 @@ GET /mediciones/{usuarioId} – Listar historial de mediciones de un usuario
 (Se recomienda usar herramientas como Postman o Swagger para probar la API)
 
 
-## Estructura del proyecto
+## Estructura del Proyecto
 
-
-
+```
 src/
 ├── main/
 │   ├── java/
 │   │   └── com/tuempresa/proyecto/
-│   │       ├── controller/   # Controladores REST
-│   │       ├── model/        # Clases de entidad y DTOs
-│   │       ├── repository/   # Interfaces para acceso a datos
-│   │       ├── service/      # Lógica de negocio
-│   │       └── config/       # Configuración (seguridad, base de datos, etc.)
+│   │       ├── controller/          # Controladores REST
+│   │       ├── model/               # Clases de entidad y DTOs
+│   │       ├── repository/          # Interfaces para acceso a datos
+│   │       ├── service/             # Lógica de negocio
+│   │       └── config/              # Configuración (seguridad, base de datos, etc.)
 │   └── resources/
-│       ├── application.properties   # Configuración de la base de datos
-│       ├── application.yml          # Alternativa de configuración YAML
-│       └── static/                  # Recursos estáticos (si aplica)
+│       ├── application.properties    # Configuración de la base de datos
+│       ├── application.yml           # Alternativa de configuración YAML
+│       └── static/                   # Recursos estáticos (si aplica)
 └── test/
     └── java/
         └── com/tuempresa/proyecto/
             └── ...                  # Pruebas unitarias y de integración
+```
+
+## Descripción de Paquetes
+
+| Carpeta | Descripción |
+|---------|-------------|
+| **controller** | Controladores REST que manejan las peticiones HTTP |
+| **model** | Entidades JPA y clases DTO para transferencia de datos |
+| **repository** | Interfaces de Spring Data JPA para acceso a base de datos |
+| **service** | Implementación de la lógica de negocio de la aplicación |
+| **config** | Clases de configuración para seguridad, base de datos, etc. |
+
+
+
+
 
 
