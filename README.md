@@ -56,3 +56,5 @@ src/main/java
 ├── repository     # Interfaces para acceso a datos
 ├── service        # Lógica de negocio
 └── config         # Configuración (seguridad, base de datos, etc.)
+
+
