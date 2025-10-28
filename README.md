@@ -66,6 +66,7 @@ GET /mediciones/{usuarioId} – Listar historial de mediciones de un usuario
 ## Estructura del proyecto
 
 
+
 src/
 ├── main/
 │ ├── java/
@@ -83,5 +84,4 @@ src/
 └── java/
 └── com/tuempresa/proyecto/
 └── ... # Pruebas unitarias y de integración
-
 
